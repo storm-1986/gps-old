@@ -1,0 +1,71 @@
+<div class="form-group ml-2 mr-2">
+	<div class="input-group">
+		<input type = 'text' class="form-control" name = 'sour' id = 'sour' aria-describedby="basic-addon1"/>
+		<input type = 'text' class="form-control" name = 'dour' id = 'dour' aria-describedby="basic-addon2"/>
+	</div>
+</div>
+<div class="btn-group fastDates pl-2 pr-2 pb-2" role="group" aria-label="Быстрый выбор даты">
+	<button type="button" class="btn btn-outline-dark btn-sm" id="today">сегодня</button>
+	<button type="button" class="btn btn-outline-dark btn-sm" id="yesterday">вчера</button>
+	<button type="button" class="btn btn-outline-dark btn-sm" id="minusday">- день</button>
+	<button type="button" class="btn btn-outline-dark btn-sm" id="plusday">+ день</button>
+  </div>
+<script>
+	$('#sour').datetimepicker({
+		dayOfWeekStart: 1,
+		format: 'd.m.Y H:i',
+		value: new Date()
+	});
+	$('#dour').datetimepicker({
+		dayOfWeekStart: 1,
+		format: 'd.m.Y H:i',
+		value: new Date()
+	});
+	$('#today').click(function(){
+		var currentDate = new Date();
+		$('#sour').datetimepicker({
+			value: currentDate
+		});
+		$('#dour').datetimepicker({
+			value: currentDate
+		});
+	});
+	$('#yesterday').click(function(){
+		var currentDate = new Date();
+		var newDate = new Date(currentDate.getTime() - 24 * 60 * 60 * 1000);
+		$('#sour').datetimepicker({
+			value: newDate
+		});
+		$('#dour').datetimepicker({
+			value: newDate
+		});
+	});
+	$('#minusday').click(function(){
+		var inputDate = $('#sour').val();
+		var parts = inputDate.split(' ');
+		var dateParts = parts[0].split('.');
+		var timeParts = parts[1].split(':');
+		var newDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
+		newDate.setDate(newDate.getDate() - 1);
+
+		var formattedDate = ('0' + newDate.getDate()).slice(-2) + '.' + ('0' + (newDate.getMonth() + 1)).slice(-2) + '.' + newDate.getFullYear() + ' ' + ('0' + newDate.getHours()).slice(-2) + ':' + ('0' + newDate.getMinutes()).slice(-2);
+
+		$('#sour').val(formattedDate);
+		$('#dour').val(formattedDate);
+	});
+	$('#plusday').click(function(){
+		var inputDate = $('#sour').val();
+		var parts = inputDate.split(' ');
+		var dateParts = parts[0].split('.');
+		var timeParts = parts[1].split(':');
+		var newDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
+		newDate.setDate(newDate.getDate() + 1);
+
+		var today = new Date();
+		if (newDate <= today) {
+			var formattedDate = ('0' + newDate.getDate()).slice(-2) + '.' + ('0' + (newDate.getMonth() + 1)).slice(-2) + '.' + newDate.getFullYear() + ' ' + ('0' + newDate.getHours()).slice(-2) + ':' + ('0' + newDate.getMinutes()).slice(-2);
+			$('#sour').val(formattedDate);
+			$('#dour').val(formattedDate);
+		}
+	});
+</script>

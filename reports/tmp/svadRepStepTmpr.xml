@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<body login="svad">
+<SetService>
+	<RepStepTmpr>
+		<ANUM type="string">AP20531</ANUM>
+		<DTBEG type="string">20240119000000</DTBEG>
+		<DTEND type="string">20240119235959</DTEND>
+		<STEP>15</STEP>
+	</RepStepTmpr>
+</SetService>
+</body>
+.
