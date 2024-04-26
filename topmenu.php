@@ -67,15 +67,15 @@ if ($_SESSION['username'] !== 'velcom'){
 		<div class="dropdown-menu">
 			<a class="dropdown-item" href="?ponline=1">Машины с данными за сегодня</a>
 			<a class="dropdown-item" href="?ponline=2">Нерабочие навигации</a>
-			<a class="dropdown-item" href="?ponline=3">Перемещение online</a>
+			<!-- <a class="dropdown-item" href="?ponline=3">Перемещение online</a> -->
 		</div>
 	</li>
 <?php
 if ($_SESSION['usertype'] >= 1){
 ?>
-	<li class="nav-item">
+	<!-- <li class="nav-item">
 		<a class="nav-link <?php if (isset($_GET['treker'])) echo "active"?> px-md-3" href="?treker=1">Трекеры</a>
-	</li>
+	</li> -->
 <?php
 }
 if ($_SESSION['usertype'] == 1){
