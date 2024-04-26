@@ -75,7 +75,7 @@ else{	// форма для добавления пользователя
 				$i = 0;
 				while($data_nreg = $nreg->fetch( PDO::FETCH_ASSOC )){
 					$admlctn = $data_nreg['LCTN'];
-					$lctnname = iconv("CP1251", "UTF-8", $data_nreg['DSCR']);
+					$lctnname = $data_nreg['DSCR'];
 					echo"<div class='form-check'><input type='checkbox' class='form-check-input rlabel' name='nreg$i' id='nreg$i' value='$admlctn'"; if ($i == 0) echo" checked"; echo"/><label class='rlabel' for='nreg$i'>$lctnname</label></div>";
 					$i++;
 				}

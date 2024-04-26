@@ -28,7 +28,7 @@ else{
 				<th scope="col">Отметить</th>
 			</tr>
 		</thead>
-<?
+<?php
 	$sp_per = $conn->query("SELECT * FROM SP_OWNER ORDER BY OWNER");
 	while($data_per = $sp_per->fetch( PDO::FETCH_ASSOC )){
 		$p_id = $data_per['OWNER'];
@@ -44,7 +44,7 @@ else{
 		-->
 		<input type="button" class="btn btn-outline-success" value="Добавить перевозчика" onclick="Addall(1)"/>
 	</div>
-<?
+<?php
 }
 ?>
 </form>

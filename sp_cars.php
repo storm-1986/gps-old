@@ -1,16 +1,14 @@
 <div class="container-fluid">
 	<div class=" h4 my-3">Справочник автомобилей</div>
 	<form id="f1" name="mform" method="post">
-<?
+<?php
 if (isset($_GET['del'])){
 	include "del_cars.php";
 }
-else{
-if (isset($_GET['add'])){
+elseif (isset($_GET['add'])){
 	include "add_cars.php";
 }
-else{
-if (isset($_GET['edit'])){
+elseif (isset($_GET['edit'])){
 	include "edit_cars.php";
 }
 else{
@@ -32,7 +30,7 @@ else{
 				<th scope="col">Отметить</th>
 			</tr>
 		</thead>
-<?
+<?php
 	$p_id = 0;
 	$sp_auto = $conn->query("SELECT * FROM SP_CARS ORDER BY ANUM");
 	while($data_auto = $sp_auto->fetch( PDO::FETCH_ASSOC )){
@@ -67,9 +65,7 @@ else{
 		-->
 		<input type="button" class="btn btn-outline-success" value="Добавить автомобиль" onclick="Addall(3)"/>
 	</div>
-<?
-}
-}
+<?php
 }
 ?>
 </form>

@@ -1,4 +1,4 @@
-<?
+<?php
 // Добавление машины для трекеров
 if (isset($_GET['a_number'])){
 
@@ -56,7 +56,7 @@ if (isset($_GET['add'])&&isset($_GET['addcarproc'])){
 			<input type="button" class="btn btn-outline-success" value="К вводу новых данных" onclick="Backtoadd(3)"/>
 			<input type="button" class="btn btn-outline-danger" value="К списку машин" onclick="Back(3)"/>
 		</div>
-<?
+<?php
 }
 else{	// форма для добавления машины
 ?>
@@ -79,7 +79,7 @@ else{	// форма для добавления машины
 			<td>
 				<select name="n_carlctn" size="1" id="n_carlctn" class="form-control" >
 					<option value="">Выбрать</option>
-<?
+<?php
 					$qnlctn = "SELECT * FROM SP_LCTN ORDER BY DSCR";
 					$resqnlctn = $conn->query($qnlctn);
 					while($data_lctn = $resqnlctn->fetch( PDO::FETCH_ASSOC )){
@@ -97,7 +97,7 @@ else{	// форма для добавления машины
 				<div class="form-group">
 				<select name="perev" size="1" id="perev" class="form-control">
 					<option value="">Выбрать</option>
-<?
+<?php
 					$qper = "SELECT * FROM SP_OWNER ORDER BY NAME";
 					$resqper = $conn->query($qper);
 					while($data_per = $resqper->fetch( PDO::FETCH_ASSOC )){
@@ -128,7 +128,7 @@ else{	// форма для добавления машины
 		<input type="button" value="Добавить машину" class="btn btn-outline-success" onclick="Addcarproc()"/>
 		<input type="button" value="Назад" class="btn btn-outline-danger" onclick="Back(3)"/>
 	</div>
-<?
+<?php
 }
 }
 ?>
