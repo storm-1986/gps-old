@@ -1,4 +1,4 @@
-<?
+<?php
 if ($_SESSION['usertype'] == 1000000000){
 	$q_nc = "SELECT ANUM FROM SP_CARS WHERE PF <> 3 AND LCTN IN (".$_SESSION['lctn'].") ORDER BY ANUM";
 }else{
@@ -29,6 +29,6 @@ while($data_cars = $nc->fetch( PDO::FETCH_ASSOC )){
 }
 ?>
 <script type='text/javascript'>
-	$(function() { $('#car_id').immybox({ choices: [<?echo $list_cars;?>]}); });
+	$(function() { $('#car_id').immybox({ choices: [<?= $list_cars; ?>]}); });
 </script>
-<input type="text" class="form-control" name="car_id" id="car_id" placeholder="Выбор машины" <?if (isset($_GET['rep'])) echo"onchange='delinfo()'";?>/>
+<input type="text" class="form-control" name="car_id" id="car_id" placeholder="Выбор машины" <?php if (isset($_GET['rep'])) echo "onchange='delinfo()'";?>/>

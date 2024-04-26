@@ -1,17 +1,12 @@
 <?php
 // Настройки подключения к SQL server
 
-try {  
-	$conn = new PDO( "sqlsrv: Server = sqlbd1; Database = GPS", NULL, NULL);   
-	$conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );  
-}  
-catch( PDOException $e ) {  
-	die( "Error connecting to SQL Server" );   
+try {
+	$conn = new PDO( "sqlsrv: Server = sqlbd1; Database = GPS; Encrypt = 0; TrustServerCertificate = 1", "laravel", "Lar_2024$");
+	$conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 }
-   
-function cod($text){
-	$text = iconv("CP1251", "UTF-8", $text);
-	return $text; 
+catch( PDOException $e ) {
+	die( "Error connecting to SQL Server". $e);
 }
 
 // Настройки сокета
