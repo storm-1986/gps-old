@@ -355,7 +355,7 @@ function sort(n){
 		break;
 	}
 }
-	document.mform.action += '?admin=2&sort='+n+'&stype='+stype;
+	document.mform.action = '?admin=2&sort='+n+'&stype='+stype;
 	document.mform.submit();
 }
 
