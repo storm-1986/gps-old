@@ -108,9 +108,6 @@
                             <input class="btn btn-outline-dark form-control btn-sm mb-2" id="ajtracks" type="button" name="addtrack" value="Показать маршрут" onclick="osmtr(1,'none')"/>
                             <input class="btn btn-outline-dark form-control btn-sm mb-2" id="ajcars" type="button" name="gcars" value="Показать где машина" onclick="OSCarOnMap()"/>
                             <!-- <input class="btn btn-outline-dark form-control mb-2" id="ajallcars" type="button" name="gallcars" value="Все машины" onclick="AllCarsOnMap()"/> -->
-                            <?php if ($_SESSION['username'] == 'admin'||$_SESSION['username'] == 'vvk'||$_SESSION['usertype'] == 20000000){ ?>
-                                <input class="btn btn-outline-dark form-control mb-2" id="ajferms" type="button" name="ajferms" value="Показать фермы" onclick="showferms()"/>
-                            <?php } ?>
                             <input type="hidden" name="lineToggle" value="0" id="lineToggle" />
                         </div>
 

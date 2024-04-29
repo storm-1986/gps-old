@@ -1128,54 +1128,6 @@ function showgroup(){
 	);
 }
 
-
-function showferms(){
-	if (window.fermsmarker){
-		for(i=0;i<fermsmarker.length;i++){
-			map.removeLayer(fermsmarker[i]);
-		}
-		layerControl.removeLayer(ferms_LayerGroup);
-		delete fermsmarker;
-		jQuery('#ajferms').attr('value','Показать фермы');
-		return false;
-	}
-	var su_name = jQuery('#u_id').val();
-	jQuery('#progress').html('<img src="images/ajax-loader.gif" width="66px" height="66px"/>');
-	var url = 'get_ferms.php';
-	jQuery.get(
-		url,
-		"su_name=" + su_name,
-		function (result){
-			if (result.type == 'error'){
-				jQuery('#progress').html('');
-				alert('Ошибка!');
-				return(false);
-			}
-			else {
-				ferms_LayerGroup = L.layerGroup();
-				fermsmarker = new Array();
-				fermscoords = new Array();
-				var i = 0;
-				jQuery(result.ferms).each(function(){
-					var fermslatlng = L.latLng(jQuery(this).attr('lat'), jQuery(this).attr('lon'));
-					var fermsm = new L.marker(fermslatlng,{icon: red,riseOnHover: true}).bindPopup(jQuery(this).attr('text'));
-					fermsmarker.push(fermsm);
-					fermscoords.push(fermslatlng);
-					map.addLayer(fermsmarker[i]);
-					ferms_LayerGroup.addLayer(fermsmarker[i]);
-					i++;
-				});
-				ferms_LayerGroup.addTo(map); layerControl.addOverlay(ferms_LayerGroup, 'Фермы');
-				var bounds = new L.LatLngBounds(fermscoords);
-				map.fitBounds(bounds);
-				jQuery('#ajferms').attr('value','Скрыть фермы');
-				jQuery('#progress').html('');
-			}
-		},
-		"json"
-	);
-}
-
 function chcolor(col){
 	jQuery('#colortrack').attr('value',col);
 }
