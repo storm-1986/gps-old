@@ -191,7 +191,7 @@
                                 $resname = trim($data_listq["DSCR"]);
                                 $i == 0 ? $ch = 'checked="checked"' : $ch = '';
                                 if (in_array($reslctn, $list_lctn)){
-                                    echo "<div class=\"form-check form-check-inline\"><input type=\"checkbox\" name=\"lctn$reslctn\" id=\"lctn$reslctn\" value=\"$reslctn\" class=\"form-check-input gr-lctn\" $ch/><label for=\"lctn$reslctn\" class=\"form-check-label rlabel\">$resname</label></div>";
+                                    echo "<div class='form-check form-check-inline'><input type='checkbox' name='lctn$reslctn' id='lctn$reslctn' value='$reslctn' class='form-check-input gr-lctn' $ch/><label for='lctn$reslctn' class='form-check-label rlabel'>$resname</label></div>";
                                     $i++;
                                 }
                             }

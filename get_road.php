@@ -1,4 +1,4 @@
-<?
+<?php
 include_once "options.php";
 /*
 $address   = "bpr_serv";
