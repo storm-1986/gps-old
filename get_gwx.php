@@ -68,51 +68,31 @@ while ($data_user = $seluser->fetch( PDO::FETCH_ASSOC )){
 
 $str2 = "		<MINTIME type=\"string\">60</MINTIME>\n		<MINPATH type=\"string\">50</MINPATH>\n";
 
-if (($f_gwx == "lastcar")||($f_gwx == "general")){
-
-	if ($resowner == 0){
-		$nc1 = ads_do($rConn, "SELECT ANUM FROM SP_CARS WHERE LCTN IN (".$reslctn.") ORDER BY ANUM");
+if (($f_gwx == "intrep")||($f_gwx == "repstop")||($f_gwx == "general")||($f_gwx == "repstopimg")||($f_gwx == "repstopll")||($f_gwx == "reptmpr")||($f_gwx == "repfuel")||($f_gwx == "repsteptmpr")){
+	if ($allday == 0){
+		$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch.$sour.$smin."00</DTBEG>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch.$poour.$pomin."00</DTEND>\n";
 	}
 	else{
-		$nc1 = ads_do($rConn, "SELECT ANUM FROM SP_CARS WHERE OWNER = ".$resowner." AND LCTN IN (".$reslctn.") ORDER BY ANUM");
+		$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch."000000</DTBEG>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch."235959</DTEND>\n";
 	}
-	
-	$str3 = '';
-	while (ads_fetch_row($nc1)){
-		$str3 .= "			<row>\n				<ANUM type=\"string\">".trim(ads_result($nc1, "ANUM"))."</ANUM>\n			</row>\n";
-	}
-}
-
-if (($f_gwx == "intrep")||($f_gwx == "repstop")||($f_gwx == "general")||($f_gwx == "repstopimg")||($f_gwx == "repstopll")||($f_gwx == "reptmpr")||($f_gwx == "repfuel")||($f_gwx == "repsteptmpr")){
-if ($allday == 0){
-	$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch.$sour.$smin."00</DTBEG>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch.$poour.$pomin."00</DTEND>\n";
-}
-else{
-	$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch."000000</DTBEG>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch."235959</DTEND>\n";
-}
 }
 
 if ($f_gwx == "repcmp"){
-if ($allday == 0){
-	$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch.$sour.$smin."00</DTBEG>\n		<DTBEGPLAN type=\"string\">".$sgod.$smes.$sch."</DTBEGPLAN>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch.$poour.$pomin."00</DTEND>\n";
-}
-else{
-	$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch."000000</DTBEG>\n		<DTBEGPLAN type=\"string\">".$sgod.$smes.$sch."</DTBEGPLAN>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch."235959</DTEND>\n";
-}
+	if ($allday == 0){
+		$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch.$sour.$smin."00</DTBEG>\n		<DTBEGPLAN type=\"string\">".$sgod.$smes.$sch."</DTBEGPLAN>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch.$poour.$pomin."00</DTEND>\n";
+	}
+	else{
+		$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch."000000</DTBEG>\n		<DTBEGPLAN type=\"string\">".$sgod.$smes.$sch."</DTBEGPLAN>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch."235959</DTEND>\n";
+	}
 }
 
 if (($f_gwx == "track")||($f_gwx == "stops")){
-if ($allday == 0){
-	$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch.$sour.$smin."00</DTBEG>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch.$poour.$pomin."00</DTEND>\n";
-}
-else{
-	$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch."000000</DTBEG>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch."235959</DTEND>\n";
-}
-}
-
-if (isset($_GET['reptype'])){
-	$reptype = $_GET['reptype'];
-	$str = "		<REPDST>".$reptype."</REPDST>\n";
+	if ($allday == 0){
+		$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch.$sour.$smin."00</DTBEG>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch.$poour.$pomin."00</DTEND>\n";
+	}
+	else{
+		$str1 = "		<DTBEG type=\"string\">".$sgod.$smes.$sch."000000</DTBEG>\n		<DTEND type=\"string\">".$pogod.$pomes.$poch."235959</DTEND>\n";
+	}
 }
 
 switch ($f_gwx){
@@ -120,42 +100,42 @@ switch ($f_gwx){
 	case "lastcar":
 		$zrep = "RepLastCar";
 		$qtype = "GetReport";
-		$frnap = "		<Cars>\n".$str3."		</Cars>\n".$str;		
+		$frnap = "		<Cars>\n".$str3."		</Cars>\n";		
 		break;
 	case "intrep":
 		$zrep = "RepInterval";
 		$qtype = "GetReport";
-		$frnap = "		<ANUM type=\"string\">".$car_id."</ANUM>\n		<PRIORITY type=\"string\">".$user_type."</PRIORITY>\n".$str1.$str2.$str;
+		$frnap = "		<ANUM type=\"string\">".$car_id."</ANUM>\n		<PRIORITY type=\"string\">".$user_type."</PRIORITY>\n".$str1.$str2;
 		break;
 	case "repstop":
 		$zrep = "RepStop";
 		$qtype = "GetReport";
-		$frnap = "		<ANUM type=\"string\">".$car_id."</ANUM>\n".$str1.$str2.$str;
+		$frnap = "		<ANUM type=\"string\">".$car_id."</ANUM>\n".$str1.$str2;
 		break;
 	case "general":
 		$zrep = "RepGeneral";
 		$qtype = "GetReport";
-		$frnap = "		<Cars>\n".$str3."		</Cars>\n".$str1.$str2.$str;
+		$frnap = "		<Cars>\n".$str3."		</Cars>\n".$str1.$str2;
 		break;
 	case "repstopimg":
 		$zrep = "RepStopImg";
 		$qtype = "GetReport";
-		$frnap = "		<ANUM type=\"string\">".$car_id."</ANUM>\n".$str1.$str2.$str;
+		$frnap = "		<ANUM type=\"string\">".$car_id."</ANUM>\n".$str1.$str2;
 		break;
 	case "repstopll":
 		$zrep = "RepStopLatLon";
 		$qtype = "GetReport";
-		$frnap = "		<ANUM type=\"string\">".$car_id."</ANUM>\n".$str1.$str2.$str;
+		$frnap = "		<ANUM type=\"string\">".$car_id."</ANUM>\n".$str1.$str2;
 		break;
 	case "repcmp":
 		$zrep = "RepCmp";
 		$qtype = "GetReport";
-		$frnap = "		<ANUM type=\"string\">".$car_id."</ANUM>\n".$str1.$str2.$str;
+		$frnap = "		<ANUM type=\"string\">".$car_id."</ANUM>\n".$str1.$str2;
 		break;
 	case "repdev":
 		$zrep = "RepDev";
 		$qtype = "GetReport";
-		$frnap = "		<OWNER>".$u_owner."</OWNER>\n".$str;
+		$frnap = "		<OWNER>".$u_owner."</OWNER>\n";
 		break;
 	case "stops":
 		$zrep = "GetRoutePoints";
@@ -179,11 +159,7 @@ switch ($f_gwx){
 		break;
 }
 
-	// $frep = fopen($path."reports\\tmp\\".$user_name.$zrep.".xml", "a+b");
-	// $del = ftruncate ($frep, 0);
-	$msg = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<body login=\"".$user_name."\">\n<".$qtype.">\n	<".$zrep.">\n".$frnap."	</".$zrep.">\n</".$qtype.">\n</body>\r\n.\r\n";
-	// $fdotop = fwrite($frep, $msg);
-	// fclose($frep);
+$msg = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<body login=\"".$user_name."\">\n<".$qtype.">\n	<".$zrep.">\n".$frnap."	</".$zrep.">\n</".$qtype.">\n</body>\r\n.\r\n";
 
 include "sock.php";
 
@@ -374,6 +350,81 @@ if (isset ($out)){
 			);
 		}
 		elseif($f_gwx == "intrep"){
+			preg_match("/<ANUM>(.+)<\/ANUM>/", $out, $outAnum);
+			preg_match("/<DTBEG>(.+)<\/DTBEG>/sUi", $out, $outDtbeg);
+			preg_match("/<FBEG>(.+)<\/FBEG>/sUi", $out, $intFBegin);
+			preg_match("/<FEND>(.+)<\/FEND>/sUi", $out, $intFEnd);
+			preg_match("/<FT1>(.+)<\/FT1>/sUi", $out, $tmprFBegin);
+			preg_match("/<FT2>(.+)<\/FT2>/sUi", $out, $tmprFEnd);
+			preg_match("/<FLEN>(.+)<\/FLEN>/sUi", $out, $intFLen);
+			preg_match("/<FAVVEL>(.+)<\/FAVVEL>/sUi", $out, $intFAvVel);
+			preg_match("/<FMAXVEL>(.+)<\/FMAXVEL>/sUi", $out, $intFMaxVel);
+			preg_match("/<FTMOVE>(.+)<\/FTMOVE>/sUi", $out, $intFMove);
+			preg_match("/<FTSTOP>(.+)<\/FTSTOP>/sUi", $out, $intFStop);
+			preg_match_all("/<ROW>(.+)<\/ROW>/sUi", $out, $outIntervals);
+			$intervals = array();
+			if (count($outIntervals[1]) > 0) {
+				$i = 0;
+				$patterns = [
+					'/, Беларусь/',
+					'/область/',
+					'/район/',
+					'/сельский Совет/',
+					'/улица/',
+					'/проспект/',
+					'/, \d{6}/',
+				];
+				$replacements = [
+					'',
+					'обл.',
+					'р-н',
+					'сел. cов.',
+					'ул.',
+					'пр-т',
+					'',
+				];
+				foreach ($outIntervals[1] as $key => $val){
+					preg_match("/<BEG>(.+)<\/BEG>/sUi", $val, $intBegin);
+					preg_match("/<END>(.+)<\/END>/sUi", $val, $intEnd);
+					preg_match("/<TBEG>(.+)<\/TBEG>/sUi", $val, $tmprBegin);
+					preg_match("/<TEND>(.+)<\/TEND>/sUi", $val, $tmprEnd);
+					preg_match("/<LEN>(.+)<\/LEN>/sUi", $val, $intLen);
+					preg_match("/<AVVEL>(.+)<\/AVVEL>/sUi", $val, $intAvVel);
+					preg_match("/<MAXVEL>(.+)<\/MAXVEL>/sUi", $val, $intMaxVel);
+					preg_match("/<MOVETIME>(.+)<\/MOVETIME>/sUi", $val, $intMove);
+					preg_match("/<STOPTIME>(.+)<\STOPTIME>/sUi", $val, $intStop);
+					if (substr($intBegin[1], 0, 5) == '_____'){
+						$intervals[$i]['DT'] = str_replace(['_', ' '], '', $intBegin[1]);
+					}else{
+						$posBegin = strpos($intBegin[1], ' - ');
+						$timeBegin = substr($intBegin[1], 0, $posBegin);
+						$adrBegin = substr($intBegin[1], $posBegin + 3);
+						$adrBegin = preg_replace($patterns, $replacements, $adrBegin);
+						$posEnd = strpos($intEnd[1], ' - ');
+						$timeEnd = substr($intEnd[1], 0, $posEnd);
+						$adrEnd = substr($intEnd[1], $posEnd + 3);
+						$adrEnd = preg_replace($patterns, $replacements, $adrEnd);
+
+						$intervals[$i]['INTERVAL'] = $timeBegin . ' - ' . $timeEnd;
+						$intervals[$i]['BEGADR'] = $adrBegin;
+						$intervals[$i]['ENDADR'] = $adrEnd;
+						$intervals[$i]['TBEG'] = round($tmprBegin[1], 1);
+						$intervals[$i]['TEND'] = round($tmprEnd[1], 1);
+						$intervals[$i]['LEN'] = $intLen[1];
+						$intervals[$i]['AVVEL'] = round($intAvVel[1]);
+						$intervals[$i]['MAXVEL'] = $intMaxVel[1];
+						$intervals[$i]['MOVETIME'] = $intMove[1];
+						$intervals[$i]['STOPTIME'] = $intMove[1];
+						$intervals[$i]['DT'] = '';
+					}
+					$i++;
+				}
+			}
+			$result = array(
+				'ANUM' => $outAnum[1],
+				'DTBEG' => $outDtbeg[1],
+				'INTERVALS' => $intervals,
+			);
 		}
 		elseif($f_gwx == "repstop"){
 		}

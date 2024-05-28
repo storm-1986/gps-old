@@ -122,7 +122,7 @@
                 <div class="card-body">
                     <div class="form-group">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="report" id="rep-int" value="1" disabled>
+                            <input class="form-check-input" type="radio" name="report" id="rep-int" value="1" checked>
                             <label class="form-check-label rlabel" for="rep-int">По интервалам движения</label>
                         </div>
                         <div class="form-check">
@@ -134,7 +134,7 @@
                             <label class="form-check-label rlabel" for="rep-sravn">Сравнительный</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="report" id="rep-ptmp" value="4" checked>
+                            <input class="form-check-input" type="radio" name="report" id="rep-ptmp" value="4">
                             <label class="form-check-label rlabel" for="rep-ptmp">По температуре (превышения)</label>
                         </div>
                         <div class="form-check">

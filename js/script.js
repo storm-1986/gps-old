@@ -1392,20 +1392,11 @@ function OSCarOnMap(){
 
 function AllCarsOnMap(){
 	var su_name = jQuery('#u_id').val();
-/*
-	if (jQuery('#old').attr('checked')){
-		var fold = 1;
-	}
-	else{
-		var fold = 0;
-	}
-*/
 	jQuery('#progress').html('<img src="images/ajax-loader.gif" width="66px" height="66px"/>');
 	var url = 'get_cars.php';
 
 	jQuery.get(
 		url,
-/*		"su_name=" + su_name + "&flagrep=0&flagold=" + fold,*/
 		"su_name=" + su_name + "&flagrep=0",
 		function (result) {
 			if (result.type == 'error'){
@@ -1477,30 +1468,22 @@ function frep_all(){	// Функция для всех отчетов
 	}
 	if (repType == 1){
 		var f_gwx = 'intrep';
-		var rep_pref = 'RepInterval';
 	}
 	if (repType == 2){
 		var f_gwx = 'repstop';
-		var rep_pref = 'RepStop';
 	}
 	if (repType == 3){
 		var f_gwx = 'repcmp';
-		var rep_pref = 'RepCmp';
 	}
 	if (repType == 4){
 		var f_gwx = 'reptmpr';
-		var rep_pref = 'RepTmpr';
 	}
 	if (repType == 6){
 		var f_gwx = 'repfuel';
-		var rep_pref = 'RepFuel';
 	}
 	if (repType == 5){
 		var f_gwx = 'repsteptmpr';
-		var rep_pref = 'RepStepTmpr';
 	}
-	var reptype = 'html';
-	var pref = '_osm'; 
 
 	jQuery('#progress').html('<img src="images/ajax-loader.gif" width="66px" height="66px"/>');
 
@@ -1508,7 +1491,7 @@ function frep_all(){	// Функция для всех отчетов
 
 	jQuery.get(
 		url,
-		"su_name=" + su_name + "&su_type=" + su_type + "&car=" + car + "&sdt=" + sdate + "&podt=" + podate + "&reptype=" + reptype + "&f_gwx=" + f_gwx + "&allday=" + alld,
+		"su_name=" + su_name + "&su_type=" + su_type + "&car=" + car + "&sdt=" + sdate + "&podt=" + podate + "&f_gwx=" + f_gwx + "&allday=" + alld,
 		function (result){
 			jQuery('#progress').html('');
 			if (result.type == 'error'){
@@ -1529,96 +1512,56 @@ function frep_all(){	// Функция для всех отчетов
 
 					var alarms = encodeURIComponent(JSON.stringify(result.ALARMS));
 					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a class = "mr-3" href="reptmpr.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&tmprmin=' + result.TMPRMIN + '&tmprmax=' + result.TMPRMAX + '&alarms=' + alarms + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по температуре в кузове</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5><h5>Минимальная фактическая температура: ' + result.TMPRMIN + ' &deg;C</h5><h5>Максимальная фактическая температура: ' + result.TMPRMAX + ' &deg;C</h5><h5 class="mt-3">Тревоги:</h5>' + alarmsList + '</div></div></div>');
-
-					$('#map').css('display', 'none');
-					$('#info').css('display', 'none');
-					$('#reports').css('display', 'block');
-				}else{
-					if (f_gwx  == 'repfuel'){
-						if (result.ALARMS.length > 0){
-							var alarmsList = '<table class="table table-striped"><thead><tr><th scope="col">Дата и время слива</th><th scope="col">Уровень до, л</th><th scope="col">Слив, л</th><th scope="col">Уровень после, л</th><th scope="col">Координаты</th><th scope="col">Примечание</th></tr></thead><tbody>';
-							result.ALARMS.forEach(item => {
-								alarmsList += '<tr><td>' + item.DT + '</td><td>' + item.BEFORE + '</td><td>' + item.DRAIN + '</td><td>' + item.AFTER + '</td><td><a href="http://bpr_serv.bmk.by/rel/map.php?cmd=marker(mlat;mlon),(' + item.LAT + ';' + item.LON + ')" target="_blank" title="Нажмите для просмотра на карте">' + item.LAT + ' ' + item.LON + '</a></td><td>' + item.COMMENT + '</td></tr>';
-							});
-							alarmsList += '</tbody></table>';
-						}else{
-							var alarmsList = 'отсутствуют';
-						}
-
-						var alarms = encodeURIComponent(JSON.stringify(result.ALARMS));
-						$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a class = "mr-3" href="repfuel.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&fuel=' + result.FUEL + '&fuelmove=' + result.FUELMOVE + '&fuelstop=' + result.FUELSTOP + '&fuelbeg=' + result.FUELBEG + '&fuelend=' + result.FUELEND + '&lenscan=' + result.LENCAN + '&lengps=' + result.LENGPS + '&lencanbeg=' + result.LENCANBEG + '&lencanend=' + result.LENCANEND + '&refill=' + result.REFILL + '&refillcnt=' + result.REFILLCNT + '&draincnt=' + result.DRAINCNT + '&stopcnt=' + result.STOPCNT + '&movetime=' + result.MOVETIME + '&avgspeed=' + result.AVGSPEED + '&alarms=' + alarms + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по топливу</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5></div></div><div class="row"><div class="col-md-6"><h5>Потрачено по ДУТ: ' + result.FUEL + ' л</h5><h5>Потрачено по ДУТ в движении: ' + result.FUELMOVE + ' л</h5><h5>Потрачено по ДУТ на холостом ходу: ' + result.FUELSTOP + ' л</h5><h5>Начальный уровень топлива: ' + result.FUELBEG + ' л</h5><h5>Конечный уровень топлива: ' + result.FUELEND + ' л</h5><h5>Пробег CAN: ' + result.LENCAN + ' км</h5><h5>Пробег GPS: ' + result.LENGPS + ' км</h5></div><div class="col-md-6"><h5>Начальный пробег CAN: ' + result.LENCANBEG + ' км</h5><h5>Конечный пробег CAN: ' + result.LENCANEND + ' км</h5><h5>Всего заправлено: ' + result.REFILL + ' л</h5><h5>Всего заправок: ' + result.REFILLCNT + '</h5><h5>Всего сливов: ' + result.DRAINCNT + '</h5><h5>Количество стоянок: ' + result.STOPCNT + '</h5><h5>Время в поездках: ' + result.MOVETIME + '</h5><h5>Средняя скорость: ' + result.AVGSPEED + ' км/ч</h5></div></div><div class="row"><div class="col"><h5 class="mt-3">Сливы:</h5>' + alarmsList + '</div></div></div>');
-
-						$('#map').css('display', 'none');
-						$('#info').css('display', 'none');
-						$('#reports').css('display', 'block');
-					}else{
-						if (f_gwx  == 'repsteptmpr'){
-							if (result.VALUES.length > 0){
-								var alarmsList = '<table class="table table-striped"><thead><tr><th scope="col">Время</th><th scope="col">Tемпература, &deg;C</th></tr></thead><tbody>';
-								result.VALUES.forEach(item => {
-									alarmsList += '<tr><td>' + item.DT + '</td><td>' + item.TMPR + '</td></tr>';
-								});
-								alarmsList += '</tbody></table>';
-							}else{
-								var alarmsList = 'отсутствуют';
-							}
-
-							var values = encodeURIComponent(JSON.stringify(result.VALUES));
-							$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a class = "mr-3" href="repsteptmpr.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&values=' + values + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по температуре (по интервалам)</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5><h5 class="mt-3">Температура:</h5>' + alarmsList + '</div></div></div>');
-
-							$('#map').css('display', 'none');
-							$('#info').css('display', 'none');
-							$('#reports').css('display', 'block');
-						}else{
-							jQuery('#result').html('<a class = "btn btn-outline-success form-control mb-2" href="reports/'+su_name+rep_pref+'.'+reptype+'?n=' +Math.random()+'" target="_blank" onclick="resclear()">Открыть отчет</a>');
-						}
-					}
 				}
-			}
-		},
-		"json"
-	);
-};
+				if (f_gwx  == 'repfuel'){
+					if (result.ALARMS.length > 0){
+						var alarmsList = '<table class="table table-striped"><thead><tr><th scope="col">Дата и время слива</th><th scope="col">Уровень до, л</th><th scope="col">Слив, л</th><th scope="col">Уровень после, л</th><th scope="col">Координаты</th><th scope="col">Примечание</th></tr></thead><tbody>';
+						result.ALARMS.forEach(item => {
+							alarmsList += '<tr><td>' + item.DT + '</td><td>' + item.BEFORE + '</td><td>' + item.DRAIN + '</td><td>' + item.AFTER + '</td><td><a href="http://bpr_serv.bmk.by/rel/map.php?cmd=marker(mlat;mlon),(' + item.LAT + ';' + item.LON + ')" target="_blank" title="Нажмите для просмотра на карте">' + item.LAT + ' ' + item.LON + '</a></td><td>' + item.COMMENT + '</td></tr>';
+						});
+						alarmsList += '</tbody></table>';
+					}else{
+						var alarmsList = 'отсутствуют';
+					}
 
-function resclear(){
-	jQuery('#result').html('<input class="btn btn-outline-dark form-control mb-2" id="intrep2367" type="button" value="Сформировать отчет" onclick="frep_all()"/>');
-}
+					var alarms = encodeURIComponent(JSON.stringify(result.ALARMS));
+					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a class = "mr-3" href="repfuel.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&fuel=' + result.FUEL + '&fuelmove=' + result.FUELMOVE + '&fuelstop=' + result.FUELSTOP + '&fuelbeg=' + result.FUELBEG + '&fuelend=' + result.FUELEND + '&lenscan=' + result.LENCAN + '&lengps=' + result.LENGPS + '&lencanbeg=' + result.LENCANBEG + '&lencanend=' + result.LENCANEND + '&refill=' + result.REFILL + '&refillcnt=' + result.REFILLCNT + '&draincnt=' + result.DRAINCNT + '&stopcnt=' + result.STOPCNT + '&movetime=' + result.MOVETIME + '&avgspeed=' + result.AVGSPEED + '&alarms=' + alarms + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по топливу</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5></div></div><div class="row"><div class="col-md-6"><h5>Потрачено по ДУТ: ' + result.FUEL + ' л</h5><h5>Потрачено по ДУТ в движении: ' + result.FUELMOVE + ' л</h5><h5>Потрачено по ДУТ на холостом ходу: ' + result.FUELSTOP + ' л</h5><h5>Начальный уровень топлива: ' + result.FUELBEG + ' л</h5><h5>Конечный уровень топлива: ' + result.FUELEND + ' л</h5><h5>Пробег CAN: ' + result.LENCAN + ' км</h5><h5>Пробег GPS: ' + result.LENGPS + ' км</h5></div><div class="col-md-6"><h5>Начальный пробег CAN: ' + result.LENCANBEG + ' км</h5><h5>Конечный пробег CAN: ' + result.LENCANEND + ' км</h5><h5>Всего заправлено: ' + result.REFILL + ' л</h5><h5>Всего заправок: ' + result.REFILLCNT + '</h5><h5>Всего сливов: ' + result.DRAINCNT + '</h5><h5>Количество стоянок: ' + result.STOPCNT + '</h5><h5>Время в поездках: ' + result.MOVETIME + '</h5><h5>Средняя скорость: ' + result.AVGSPEED + ' км/ч</h5></div></div><div class="row"><div class="col"><h5 class="mt-3">Сливы:</h5>' + alarmsList + '</div></div></div>');
+				}
+				if (f_gwx  == 'repsteptmpr'){
+					if (result.VALUES.length > 0){
+						var alarmsList = '<table class="table table-striped"><thead><tr><th scope="col">Время</th><th scope="col">Tемпература, &deg;C</th></tr></thead><tbody>';
+						result.VALUES.forEach(item => {
+							alarmsList += '<tr><td>' + item.DT + '</td><td>' + item.TMPR + '</td></tr>';
+						});
+						alarmsList += '</tbody></table>';
+					}else{
+						var alarmsList = 'отсутствуют';
+					}
 
-function frep9(){	// Функция отчёта по приборам
+					var values = encodeURIComponent(JSON.stringify(result.VALUES));
+					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a class = "mr-3" href="repsteptmpr.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&values=' + values + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по температуре (по интервалам)</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5><h5 class="mt-3">Температура:</h5>' + alarmsList + '</div></div></div>');
+				}
+				if (f_gwx  == 'intrep'){
+					if (result.INTERVALS.length > 0){
+						var intervalsList = '<table class="table table-striped"><thead><tr><th scope="col">Интервал</th><th scope="col">Адрес начальный</th><th scope="col">Адрес конечный</th><th scope="col">T нач.</th><th scope="col">Т кон.</th><th scope="col">Путь, км</th><th scope="col">Ср. скор, км/ч</th><th scope="col">Макс. скор, км/ч</th><th scope="col">Время движ, ч:мин</th><th scope="col">Время стоянки, ч:мин</th></tr></thead><tbody>';
+						result.INTERVALS.forEach(item => {
+							if (item.DT > ''){
+								intervalsList += '<tr><td colspan="10" class="text-center"><b>' + item.DT + '</b></td></tr>';
+							}else{
+								intervalsList += '<tr><td>' + item.INTERVAL + '</td><td>' + item.BEGADR + '</td><td>' + item.ENDADR + '</td><td>' + item.TBEG + '</td><td>' + item.TEND + '</td><td>' + item.LEN + '</td><td>' + item.AVVEL + '</td><td>' + item.MAXVEL + '</td><td>' + item.MOVETIME + '</td><td>' + item.STOPTIME + '</td></tr>';
+							}
+						});
+						intervalsList += '</tbody></table>';
+					}else{
+						var intervalsList = 'отсутствуют';
+					}
 
-	var su_name = jQuery('#u_id').val();
-	var su_own = jQuery('#u_own').val();
-
-	var f_gwx = 'repdev';
-
-	if (jQuery('#rtype1').attr('checked')){
-		var reptype = 'html';
-	}
-	else{
-	if (jQuery('#rtype2').attr('checked')){
-		var reptype = 'pdf';
-	}
-	else{
-		var reptype = 'xls';
-	}
-	}
-
-	jQuery('#progress').html('<img src="images/ajax-loader.gif" width="66px" height="66px"/>');
-
-	var url = 'get_gwx.php';
-
-	jQuery.get(
-		url,
-		"su_name=" + su_name +"&su_own=" + su_own + "&reptype=" + reptype + "&f_gwx=" + f_gwx,
-		function (result){
-			if (result.type == 'error'){
-				jQuery('#progress').html('');
-				alert (result.res);
-				return(false);
-			}
-			else {
-				jQuery('#progress').html('');
-				jQuery('#result').html('<h1><a href="reports/'+su_name+'RepDev.'+reptype+'?n=' +Math.random()+'" target="_blank">Отчёт сформирован. Для просмотра нажмите на данную ссылку.</a></h1>');
+					var intervals = encodeURIComponent(JSON.stringify(result.INTERVALS));
+					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a class = "mr-3" href="repinterval.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&intervals=' + intervals + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по интервалам движения</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + '</h5>' + intervalsList + '</div></div></div>');
+				}
+				$('#map').css('display', 'none');
+				$('#info').css('display', 'none');
+				$('#reports').css('display', 'block');
 			}
 		},
 		"json"
