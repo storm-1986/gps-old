@@ -12,7 +12,7 @@ catch( PDOException $e ) {
 // Настройки сокета
 
 $address   = "bpr-serv-prod-2012.bmk.by";
-$port      = 2567;
+$port      = 2568;
 $path      = "c:/Apache/sites/home/localhost/www/"; // путь к папке map
 $filepath  = "c:/Apache/sites/home/localhost/www/";
 $attempts  = 5;		// Кол-во попыток на ввод пароля
