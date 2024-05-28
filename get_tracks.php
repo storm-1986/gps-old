@@ -270,56 +270,54 @@ if (($trtype == 0)||($trtype == 2)){
 	$maxtemp = 0;
 	$ar_coord = array();
 
-	if (count($ar_coord) == 0){
-		$resultid = $conn->query($sql_query);
+	$resultid = $conn->query($sql_query);
+	while($data_rid = $resultid->fetch( PDO::FETCH_ASSOC )){
+		$latt = $data_rid["LATT"];
+		$longt = $data_rid["LONGT"];
+		if ($latt > 40 && $latt < 65 && $longt > 5 && $longt < 190){
+			$ddate = $data_rid["DDATE"];
+			$ttime = $data_rid["TTIME"];
+			/* Обработка времени */
+			$vrem4skor = strtotime($data_rid["DTSTAMP"]);
+			($count == 0) ?	$start_dt = $data_rid["DTSTAMP"] : '';
+			$end_dt = $data_rid["DTSTAMP"];
+			/* Конец обработки времени */
+			$dt_time = substr($ddate,8,2).".".substr($ddate,5,2).".".substr($ddate,0,4)." ".substr($ttime,0,5);
+			$skor = $data_rid["VEL"];
+			$tmpr = $data_rid["TMPR"];
+			// $topl = $data_rid["FUEL"];
 
-		while($data_rid = $resultid->fetch( PDO::FETCH_ASSOC )){
-			$latt = $data_rid["LATT"];
-			$longt = $data_rid["LONGT"];
-			if ($latt > 40 && $latt < 65 && $longt > 5 && $longt < 190){
-				$ddate = $data_rid["DDATE"];
-				$ttime = $data_rid["TTIME"];
-				/* Обработка времени */
-				$vrem4skor = strtotime($data_rid["DTSTAMP"]);
-				($count == 0) ?	$start_dt = $data_rid["DTSTAMP"] : '';
-				$end_dt = $data_rid["DTSTAMP"];
-				/* Конец обработки времени */
-				$dt_time = substr($ddate,8,2).".".substr($ddate,5,2).".".substr($ddate,0,4)." ".substr($ttime,0,5);
-				$skor = $data_rid["VEL"];
-				$tmpr = $data_rid["TMPR"];
-				// $topl = $data_rid["FUEL"];
-	
-				($skor > $maxskor) ? $maxskor = intval($skor) : '';	//	макс. скорость
-	
-				$ar_coord[$count]['lat'] = $latt;
-				$ar_coord[$count]['lon'] = $longt;
-				$ar_coord[$count]['vremya'] = $vrem4skor * 1000;
-				$ar_coord[$count]['skor'] = intval($skor);
-				$ar_coord[$count]['tmpr'] = round($tmpr, 1);
-				// $ar_coord[$count]['topl'] = $topl;
-				$ar_coord[$count]['text'] = "<b>$car_id</b> - фактический маршрут<br/><b>дата и время:</b> $dt_time<br /><b>скорость:</b> $skor км/ч<br />";
-				if ($count == 0){
-					$first_lat = $latt;
-					$first_lon = $longt;
-					$first_text = "<b>$car_id</b> - начало фактического маршрута<br/><b>дата и время:</b> $dt_time<br /><b>скорость:</b> $skor км/ч";
-				}
-				if ($trtype == 2){
-				if ($count == 0){
-					$fmaxlat = $latt;
-					$fminlat = $latt;
-					$fmaxlon = $longt;
-					$fminlon = $longt;
-				}else{
-					if ($latt > $fmaxlat) $fmaxlat = $latt;
-					if ($latt < $fminlat) $fminlat = $latt; 
-					if ($longt > $fmaxlon) $fmaxlon = $longt;
-					if ($longt < $fminlon) $fminlon = $longt;	
-				}
-				}
-				$count++;
+			($skor > $maxskor) ? $maxskor = intval($skor) : '';	//	макс. скорость
+
+			$ar_coord[$count]['lat'] = $latt;
+			$ar_coord[$count]['lon'] = $longt;
+			$ar_coord[$count]['vremya'] = $vrem4skor * 1000;
+			$ar_coord[$count]['skor'] = intval($skor);
+			$ar_coord[$count]['tmpr'] = round($tmpr, 1);
+			// $ar_coord[$count]['topl'] = $topl;
+			$ar_coord[$count]['text'] = "<b>$car_id</b> - фактический маршрут<br/><b>дата и время:</b> $dt_time<br /><b>скорость:</b> $skor км/ч<br />";
+			if ($count == 0){
+				$first_lat = $latt;
+				$first_lon = $longt;
+				$first_text = "<b>$car_id</b> - начало фактического маршрута<br/><b>дата и время:</b> $dt_time<br /><b>скорость:</b> $skor км/ч";
 			}
+			if ($trtype == 2){
+			if ($count == 0){
+				$fmaxlat = $latt;
+				$fminlat = $latt;
+				$fmaxlon = $longt;
+				$fminlon = $longt;
+			}else{
+				if ($latt > $fmaxlat) $fmaxlat = $latt;
+				if ($latt < $fminlat) $fminlat = $latt; 
+				if ($longt > $fmaxlon) $fmaxlon = $longt;
+				if ($longt < $fminlon) $fminlon = $longt;	
+			}
+			}
+			$count++;
 		}
 	}
+
 	$ar_topl = array();
 	if ($topl == 1) $res_topl = $conn->query($sql_q_topl);
 	if (isset($res_topl)){
@@ -352,9 +350,11 @@ if (($trtype == 0)||($trtype == 2)){
 	}
 
 //	$interval = date_diff($start_dt, $end_dt);
-	$last_lat = $latt;
-	$last_lon = $longt;
-	$last_text = "<b>$car_id</b> - конец фактического маршрута<br/><b>дата и время:</b> $dt_time<br /><b>скорость:</b> $skor км/ч";
+	if (count($ar_coord) > 0){
+		$last_lat = $latt;
+		$last_lon = $longt;
+		$last_text = "<b>$car_id</b> - конец фактического маршрута<br/><b>дата и время:</b> $dt_time<br /><b>скорость:</b> $skor км/ч";
+	}
 	// Превышения скорости
 	if ($prev == 1){
 		$resultTpl = $conn->query($prev_query);
