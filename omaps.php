@@ -130,7 +130,7 @@
                             <label class="form-check-label rlabel" for="rep-stop">По стоянкам</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="report" id="rep-sravn" value="3" disabled>
+                            <input class="form-check-input" type="radio" name="report" id="rep-sravn" value="3">
                             <label class="form-check-label rlabel" for="rep-sravn">Сравнительный</label>
                         </div>
                         <div class="form-check">

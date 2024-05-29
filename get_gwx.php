@@ -165,13 +165,13 @@ include "sock.php";
 
 if (isset ($out)){
 	$patterns = [
-		'/, Беларусь/',
+		'/(, Республика)* Беларусь/',
 		'/область/',
 		'/район/',
 		'/сельский Совет/',
 		'/улица/',
 		'/проспект/',
-		'/, \d{6}/',
+		'/(, )*\d{6},*/',
 	];
 	$replacements = [
 		'',
@@ -462,6 +462,42 @@ if (isset ($out)){
 			);
 		}
 		elseif($f_gwx == "repcmp"){
+			preg_match("/<ANUM>(.+)<\/ANUM>/", $out, $outAnum);
+			preg_match("/<DTBEG>(.+)<\/DTBEG>/sUi", $out, $outDtbeg);
+			preg_match("/<SHIFT>(.+)<\/SHIFT>/sUi", $out, $outShift);
+			preg_match_all("/<ROW>(.+)<\/ROW>/sUi", $out, $outStops);
+			$stops = array();
+			if (count($outStops[1]) > 0) {
+				$i = 0;
+				foreach ($outStops[1] as $key => $val){
+					preg_match("/<NP>(.+)<\/NP>/sUi", $val, $stopNp);
+					preg_match("/<NTRIP>(.+)<\/NTRIP>/sUi", $val, $stopNtrip);
+					preg_match("/<DTPLAN>(.+)<\/DTPLAN>/sUi", $val, $stopDtPlan);
+					preg_match("/<TP>(.+)<\/TP>/sUi", $val, $stopTp);
+					preg_match("/<DTFACT>(.+)<\/DTFACT>/sUi", $val, $stopDtFact);
+					preg_match("/<TMPR>(.+)<\/TMPR>/sUi", $val, $stopTmpr);
+					preg_match("/<ADDR>(.+)<\/ADDR>/sUi", $val, $stopAddr);
+					$stops[$i]['NP'] = isset($stopNp[1]) ? $stopNp[1] : '';
+					$stops[$i]['NTRIP'] = isset($stopNtrip[1]) ? $stopNtrip[1] : '';
+					$stops[$i]['DTPLAN'] = isset($stopDtPlan[1]) ? $stopDtPlan[1] : '';
+					$stops[$i]['TP'] = isset($stopTp[1]) ? $stopTp[1] : '';
+					$stops[$i]['DTFACT'] = isset($stopDtFact[1]) ? $stopDtFact[1] : '';
+					if (isset($stopTmpr[1])){
+						$tmpr = explode('...', $stopTmpr[1]);
+						$stops[$i]['TMPR'] = round($tmpr[0], 1) . ' - ' . round($tmpr[1], 1);
+					}else{
+						$stops[$i]['TMPR'] = '';
+					}
+					$stops[$i]['ADDR'] = isset($stopAddr[1]) ? preg_replace($patterns, $replacements, $stopAddr[1]) : '';
+					$i++;
+				}
+			}
+			$result = array(
+				'ANUM' => $outAnum[1],
+				'DTBEG' => $outDtbeg[1],
+				'SHIFT' => isset($outShift[1]) ? $outShift[1] : '',
+				'STOPS' => $stops,
+			);
 		}
 		else{
 			$out_mnlat = array();

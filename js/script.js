@@ -1579,6 +1579,18 @@ function frep_all(){	// Функция для всех отчетов
 					}
 					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по стоянкам</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + '</h5>' + stopsList + '</div></div></div>');
 				}
+				if (f_gwx  == 'repcmp'){
+					if (result.STOPS.length > 0){
+						var stopsList = '<table class="table table-striped"><thead><tr><th scope="col">№ точки</th><th scope="col">№ рейса</th><th scope="col">№ дня и время план</th><th scope="col">Тип точки</th><th scope="col">№ дня, время, длит. стоянки факт</th><th scope="col">T в кузове</th><th scope="col">Адрес точки</th></tr></thead><tbody>';
+						result.STOPS.forEach(item => {
+							stopsList += '<tr><td>' + item.NP + '</td><td>' + item.NTRIP + '</td><td>' + item.DTPLAN + '</td><td>' + item.TP + '</td><td>' + item.DTFACT + '</td><td>' + item.TMPR + '</td><td>' + item.ADDR + '</td></tr>';
+						});
+						stopsList += '</tbody></table>';
+					}else{
+						var stopsList = 'отсутствуют';
+					}
+					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Сравнительный отчет</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">Дата начала маршрута: ' + result.DTBEG + '</h5><h5 class="mb-3">Смена: ' + result.SHIFT + '</h5>' + stopsList + '</div></div></div>');
+				}
 				$('#map').css('display', 'none');
 				$('#info').css('display', 'none');
 				$('#reports').css('display', 'block');
