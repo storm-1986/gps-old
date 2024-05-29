@@ -164,6 +164,24 @@ $msg = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<body login=\"".$user_name."
 include "sock.php";
 
 if (isset ($out)){
+	$patterns = [
+		'/, Беларусь/',
+		'/область/',
+		'/район/',
+		'/сельский Совет/',
+		'/улица/',
+		'/проспект/',
+		'/, \d{6}/',
+	];
+	$replacements = [
+		'',
+		'обл.',
+		'р-н',
+		'сел. cов.',
+		'ул.',
+		'пр-т',
+		'',
+	];
 	preg_match_all("/<Error>(.+)<\/Error>/sUi", $out, $errors);
 	if (count($errors[1]) == 0){
 		if ($f_gwx == "stops"){
@@ -365,24 +383,6 @@ if (isset ($out)){
 			$intervals = array();
 			if (count($outIntervals[1]) > 0) {
 				$i = 0;
-				$patterns = [
-					'/, Беларусь/',
-					'/область/',
-					'/район/',
-					'/сельский Совет/',
-					'/улица/',
-					'/проспект/',
-					'/, \d{6}/',
-				];
-				$replacements = [
-					'',
-					'обл.',
-					'р-н',
-					'сел. cов.',
-					'ул.',
-					'пр-т',
-					'',
-				];
 				foreach ($outIntervals[1] as $key => $val){
 					preg_match("/<BEG>(.+)<\/BEG>/sUi", $val, $intBegin);
 					preg_match("/<END>(.+)<\/END>/sUi", $val, $intEnd);
@@ -405,7 +405,7 @@ if (isset ($out)){
 						$adrEnd = substr($intEnd[1], $posEnd + 3);
 						$adrEnd = preg_replace($patterns, $replacements, $adrEnd);
 
-						$intervals[$i]['INTERVAL'] = $timeBegin . ' - ' . $timeEnd;
+						$intervals[$i]['INTERVAL'] = $timeBegin . '<br>' . $timeEnd;
 						$intervals[$i]['BEGADR'] = $adrBegin;
 						$intervals[$i]['ENDADR'] = $adrEnd;
 						$intervals[$i]['TBEG'] = round($tmprBegin[1], 1);
@@ -427,6 +427,39 @@ if (isset ($out)){
 			);
 		}
 		elseif($f_gwx == "repstop"){
+			preg_match("/<ANUM>(.+)<\/ANUM>/", $out, $outAnum);
+			preg_match("/<DTBEG>(.+)<\/DTBEG>/sUi", $out, $outDtbeg);
+			preg_match_all("/<ROW>(.+)<\/ROW>/sUi", $out, $outStops);
+			$stops = array();
+			if (count($outStops[1]) > 0) {
+				$i = 0;
+				foreach ($outStops[1] as $key => $val){
+					preg_match("/<DT>(.+)<\/DT>/sUi", $val, $stopDt);
+					preg_match("/<BEG>(.+)<\/BEG>/sUi", $val, $stopBegin);
+					preg_match("/<END>(.+)<\/END>/sUi", $val, $stopEnd);
+					preg_match("/<DUR>(.+)<\/DUR>/sUi", $val, $stopDur);
+					preg_match("/<AVVEL>(.+)<\/AVVEL>/sUi", $val, $stopAvVel);
+					preg_match("/<LEN>(.+)<\/LEN>/sUi", $val, $stopLen);
+					preg_match("/<ADDR>(.+)<\/ADDR>/sUi", $val, $stopAddr);
+					if ($stopDt[1] == 'Движение' || $stopDt[1] == 'Стоянка'){
+						$stops[$i]['DT'] = $stopDt[1];
+						$stops[$i]['BEG'] = $stopBegin[1];
+						$stops[$i]['END'] = $stopEnd[1];
+						$stops[$i]['DUR'] = $stopDur[1];
+						$stops[$i]['AVVEL'] = $stopDt[1] == 'Движение' ? round($stopAvVel[1]) : '';
+						$stops[$i]['LEN'] = $stopDt[1] == 'Движение' ? $stopLen[1] : '';
+						$stops[$i]['ADDR'] = $stopDt[1] == 'Стоянка' ? preg_replace($patterns, $replacements, $stopAddr[1]) : '';
+					}else{
+						$stops[$i]['DT'] = $stopDt[1];
+					}
+					$i++;
+				}
+			}
+			$result = array(
+				'ANUM' => $outAnum[1],
+				'DTBEG' => $outDtbeg[1],
+				'STOPS' => $stops,
+			);
 		}
 		elseif($f_gwx == "repcmp"){
 		}

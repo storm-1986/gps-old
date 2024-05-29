@@ -1499,7 +1499,7 @@ function frep_all(){	// Функция для всех отчетов
 				return(false);
 			}
 			else{
-				if (f_gwx  == 'reptmpr'){
+				if (f_gwx == 'reptmpr'){
 					if (result.ALARMS.length > 0){
 						var alarmsList = '<table class="table table-striped"><thead><tr><th scope="col">Начало</th><th scope="col">Конец</th><th scope="col">T в начале, &deg;C</th><th scope="col">T в конце, &deg;C</th><th scope="col">Mин t, &deg;C</th><th scope="col">Mакс t, &deg;C</th><th scope="col">Координаты</th></tr></thead><tbody>';
 						result.ALARMS.forEach(item => {
@@ -1510,11 +1510,11 @@ function frep_all(){	// Функция для всех отчетов
 						var alarmsList = 'отсутствуют';
 					}
 
-					var alarms = encodeURIComponent(JSON.stringify(result.ALARMS));
+					// var alarms = encodeURIComponent(JSON.stringify(result.ALARMS));
 					// <a class = "mr-3" href="reptmpr.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&tmprmin=' + result.TMPRMIN + '&tmprmax=' + result.TMPRMAX + '&alarms=' + alarms + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a>
 					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по температуре в кузове</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5><h5>Минимальная фактическая температура: ' + result.TMPRMIN + ' &deg;C</h5><h5>Максимальная фактическая температура: ' + result.TMPRMAX + ' &deg;C</h5><h5 class="mt-3">Тревоги:</h5>' + alarmsList + '</div></div></div>');
 				}
-				if (f_gwx  == 'repfuel'){
+				if (f_gwx == 'repfuel'){
 					if (result.ALARMS.length > 0){
 						var alarmsList = '<table class="table table-striped"><thead><tr><th scope="col">Дата и время слива</th><th scope="col">Уровень до, л</th><th scope="col">Слив, л</th><th scope="col">Уровень после, л</th><th scope="col">Координаты</th><th scope="col">Примечание</th></tr></thead><tbody>';
 						result.ALARMS.forEach(item => {
@@ -1525,11 +1525,11 @@ function frep_all(){	// Функция для всех отчетов
 						var alarmsList = 'отсутствуют';
 					}
 
-					var alarms = encodeURIComponent(JSON.stringify(result.ALARMS));
+					// var alarms = encodeURIComponent(JSON.stringify(result.ALARMS));
 					// <a class = "mr-3" href="repfuel.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&fuel=' + result.FUEL + '&fuelmove=' + result.FUELMOVE + '&fuelstop=' + result.FUELSTOP + '&fuelbeg=' + result.FUELBEG + '&fuelend=' + result.FUELEND + '&lenscan=' + result.LENCAN + '&lengps=' + result.LENGPS + '&lencanbeg=' + result.LENCANBEG + '&lencanend=' + result.LENCANEND + '&refill=' + result.REFILL + '&refillcnt=' + result.REFILLCNT + '&draincnt=' + result.DRAINCNT + '&stopcnt=' + result.STOPCNT + '&movetime=' + result.MOVETIME + '&avgspeed=' + result.AVGSPEED + '&alarms=' + alarms + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a>
 					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по топливу</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5></div></div><div class="row"><div class="col-md-6"><h5>Потрачено по ДУТ: ' + result.FUEL + ' л</h5><h5>Потрачено по ДУТ в движении: ' + result.FUELMOVE + ' л</h5><h5>Потрачено по ДУТ на холостом ходу: ' + result.FUELSTOP + ' л</h5><h5>Начальный уровень топлива: ' + result.FUELBEG + ' л</h5><h5>Конечный уровень топлива: ' + result.FUELEND + ' л</h5><h5>Пробег CAN: ' + result.LENCAN + ' км</h5><h5>Пробег GPS: ' + result.LENGPS + ' км</h5></div><div class="col-md-6"><h5>Начальный пробег CAN: ' + result.LENCANBEG + ' км</h5><h5>Конечный пробег CAN: ' + result.LENCANEND + ' км</h5><h5>Всего заправлено: ' + result.REFILL + ' л</h5><h5>Всего заправок: ' + result.REFILLCNT + '</h5><h5>Всего сливов: ' + result.DRAINCNT + '</h5><h5>Количество стоянок: ' + result.STOPCNT + '</h5><h5>Время в поездках: ' + result.MOVETIME + '</h5><h5>Средняя скорость: ' + result.AVGSPEED + ' км/ч</h5></div></div><div class="row"><div class="col"><h5 class="mt-3">Сливы:</h5>' + alarmsList + '</div></div></div>');
 				}
-				if (f_gwx  == 'repsteptmpr'){
+				if (f_gwx == 'repsteptmpr'){
 					if (result.VALUES.length > 0){
 						var alarmsList = '<table class="table table-striped"><thead><tr><th scope="col">Время</th><th scope="col">Tемпература, &deg;C</th></tr></thead><tbody>';
 						result.VALUES.forEach(item => {
@@ -1540,11 +1540,11 @@ function frep_all(){	// Функция для всех отчетов
 						var alarmsList = 'отсутствуют';
 					}
 
-					var values = encodeURIComponent(JSON.stringify(result.VALUES));
+					// var values = encodeURIComponent(JSON.stringify(result.VALUES));
 					// <a class = "mr-3" href="repsteptmpr.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&values=' + values + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a>
 					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по температуре (по интервалам)</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5><h5 class="mt-3">Температура:</h5>' + alarmsList + '</div></div></div>');
 				}
-				if (f_gwx  == 'intrep'){
+				if (f_gwx == 'intrep'){
 					if (result.INTERVALS.length > 0){
 						var intervalsList = '<table class="table table-striped"><thead><tr><th scope="col">Интервал</th><th scope="col">Адрес начальный</th><th scope="col">Адрес конечный</th><th scope="col">T нач.</th><th scope="col">Т кон.</th><th scope="col">Путь, км</th><th scope="col">Ср. скор, км/ч</th><th scope="col">Макс. скор, км/ч</th><th scope="col">Время движ, ч:мин</th><th scope="col">Время стоянки, ч:мин</th></tr></thead><tbody>';
 						result.INTERVALS.forEach(item => {
@@ -1559,9 +1559,25 @@ function frep_all(){	// Функция для всех отчетов
 						var intervalsList = 'отсутствуют';
 					}
 
-					var intervals = encodeURIComponent(JSON.stringify(result.INTERVALS));
+					// var intervals = encodeURIComponent(JSON.stringify(result.INTERVALS));
 					// <a class = "mr-3" href="repinterval.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&intervals=' + intervals + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a>
 					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по интервалам движения</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + '</h5>' + intervalsList + '</div></div></div>');
+				}
+				if (f_gwx  == 'repstop'){
+					if (result.STOPS.length > 0){
+						var stopsList = '<table class="table table-striped"><thead><tr><th scope="col">Состояние</th><th scope="col">Начало</th><th scope="col">Конец</th><th scope="col">Длительность, ч:мин</th><th scope="col">Ср. скор., км/ч</th><th scope="col">Путь, км</th><th scope="col">Адрес</th></tr></thead><tbody>';
+						result.STOPS.forEach(item => {
+							if (item.DT == 'Движение' || item.DT == 'Стоянка'){
+								stopsList += '<tr><td>' + item.DT + '</td><td>' + item.BEG + '</td><td>' + item.END + '</td><td>' + item.DUR + '</td><td>' + item.AVVEL + '</td><td>' + item.LEN + '</td><td>' + item.ADDR + '</td></tr>';
+							}else{
+								stopsList += '<tr><td colspan="7" class="text-center"><b>' + item.DT + '</b></td></tr>';
+							}
+						});
+						stopsList += '</tbody></table>';
+					}else{
+						var stopsList = 'отсутствуют';
+					}
+					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по стоянкам</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + '</h5>' + stopsList + '</div></div></div>');
 				}
 				$('#map').css('display', 'none');
 				$('#info').css('display', 'none');

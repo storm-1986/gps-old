@@ -126,7 +126,7 @@
                             <label class="form-check-label rlabel" for="rep-int">По интервалам движения</label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="report" id="rep-stop" value="2" disabled>
+                            <input class="form-check-input" type="radio" name="report" id="rep-stop" value="2">
                             <label class="form-check-label rlabel" for="rep-stop">По стоянкам</label>
                         </div>
                         <div class="form-check">
