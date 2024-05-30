@@ -165,7 +165,7 @@ include "sock.php";
 
 if (isset ($out)){
 	$patterns = [
-		'/(, Республика)* Беларусь/',
+		'/,( Республика)* Беларусь/',
 		'/область/',
 		'/район/',
 		'/сельский Совет/',
@@ -477,6 +477,8 @@ if (isset ($out)){
 					preg_match("/<AVVEL>(.+)<\/AVVEL>/sUi", $val, $stopAvVel);
 					preg_match("/<LEN>(.+)<\/LEN>/sUi", $val, $stopLen);
 					preg_match("/<ADDR>(.+)<\/ADDR>/sUi", $val, $stopAddr);
+					preg_match("/<LAT>(.+)<\/LAT>/sUi", $val, $stopLat);
+					preg_match("/<LON>(.+)<\/LON>/sUi", $val, $stopLon);
 					if ($stopDt[1] == 'Движение' || $stopDt[1] == 'Стоянка'){
 						$stops[$i]['DT'] = $stopDt[1];
 						$stops[$i]['BEG'] = $stopBegin[1];
@@ -485,6 +487,8 @@ if (isset ($out)){
 						$stops[$i]['AVVEL'] = $stopDt[1] == 'Движение' ? round($stopAvVel[1]) : '';
 						$stops[$i]['LEN'] = $stopDt[1] == 'Движение' ? $stopLen[1] : '';
 						$stops[$i]['ADDR'] = $stopDt[1] == 'Стоянка' ? preg_replace($patterns, $replacements, $stopAddr[1]) : '';
+						$stops[$i]['LAT'] = $stopDt[1] == 'Стоянка' ? $stopLat[1] : '';
+						$stops[$i]['LON'] = $stopDt[1] == 'Стоянка' ? $stopLon[1] : '';
 					}else{
 						$stops[$i]['DT'] = $stopDt[1];
 					}

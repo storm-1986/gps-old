@@ -1569,7 +1569,12 @@ function frep_all(){	// Функция для всех отчетов
 						var stopsList = '<table class="table table-striped"><thead><tr><th scope="col">Состояние</th><th scope="col">Начало</th><th scope="col">Конец</th><th scope="col">Длительность, ч:мин</th><th scope="col">Ср. скор., км/ч</th><th scope="col">Путь, км</th><th scope="col">Адрес</th></tr></thead><tbody>';
 						result.STOPS.forEach(item => {
 							if (item.DT == 'Движение' || item.DT == 'Стоянка'){
-								stopsList += '<tr><td>' + item.DT + '</td><td>' + item.BEG + '</td><td>' + item.END + '</td><td>' + item.DUR + '</td><td>' + item.AVVEL + '</td><td>' + item.LEN + '</td><td>' + item.ADDR + '</td></tr>';
+								if (item.DT == 'Стоянка'){
+									var link = '<a href="http://bpr_serv.bmk.by/rel/map.php?cmd=marker(mlat;mlon),(' + item.LAT + ';' + item.LON + ')" target="_blank" title="Нажмите для просмотра на карте">' + item.ADDR + '</a>'
+								}else{
+									var link = ''
+								}
+								stopsList += '<tr><td>' + item.DT + '</td><td>' + item.BEG + '</td><td>' + item.END + '</td><td>' + item.DUR + '</td><td>' + item.AVVEL + '</td><td>' + item.LEN + '</td><td>' + link + '</td></tr>';
 							}else{
 								stopsList += '<tr><td colspan="7" class="text-center"><b>' + item.DT + '</b></td></tr>';
 							}
