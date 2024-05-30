@@ -517,6 +517,8 @@ if (isset ($out)){
 					preg_match("/<DTFACT>(.+)<\/DTFACT>/sUi", $val, $stopDtFact);
 					preg_match("/<TMPR>(.+)<\/TMPR>/sUi", $val, $stopTmpr);
 					preg_match("/<ADDR>(.+)<\/ADDR>/sUi", $val, $stopAddr);
+					preg_match("/<LAT>(.+)<\/LAT>/sUi", $val, $stopLat);
+					preg_match("/<LON>(.+)<\/LON>/sUi", $val, $stopLon);
 					$stops[$i]['NP'] = isset($stopNp[1]) ? $stopNp[1] : '';
 					$stops[$i]['NTRIP'] = isset($stopNtrip[1]) ? $stopNtrip[1] : '';
 					$stops[$i]['DTPLAN'] = isset($stopDtPlan[1]) ? $stopDtPlan[1] : '';
@@ -529,6 +531,8 @@ if (isset ($out)){
 						$stops[$i]['TMPR'] = '';
 					}
 					$stops[$i]['ADDR'] = isset($stopAddr[1]) ? preg_replace($patterns, $replacements, $stopAddr[1]) : '';
+					$stops[$i]['LAT'] = isset($stopLat[1]) ? $stopLat[1] : '';
+					$stops[$i]['LON'] = isset($stopLon[1]) ? $stopLon[1] : '';
 					$i++;
 				}
 			}

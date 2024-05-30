@@ -1589,7 +1589,12 @@ function frep_all(){	// Функция для всех отчетов
 					if (result.STOPS.length > 0){
 						var stopsList = '<table class="table table-striped"><thead><tr><th scope="col">№ точки</th><th scope="col">№ рейса</th><th scope="col">№ дня и время план</th><th scope="col">Тип точки</th><th scope="col">№ дня, время, длит. стоянки факт</th><th scope="col">T в кузове</th><th scope="col">Адрес точки</th></tr></thead><tbody>';
 						result.STOPS.forEach(item => {
-							stopsList += '<tr><td>' + item.NP + '</td><td>' + item.NTRIP + '</td><td>' + item.DTPLAN + '</td><td>' + item.TP + '</td><td>' + item.DTFACT + '</td><td>' + item.TMPR + '</td><td>' + item.ADDR + '</td></tr>';
+							if (item.LAT != '' && item.LON != ''){
+								var link = '<a href="http://bpr_serv.bmk.by/rel/map.php?cmd=marker(mlat;mlon),(' + item.LAT + ';' + item.LON + ')" target="_blank" title="Нажмите для просмотра на карте">' + item.ADDR + '</a>'
+							}else{
+								var link = item.ADDR;
+							}
+							stopsList += '<tr><td>' + item.NP + '</td><td>' + item.NTRIP + '</td><td>' + item.DTPLAN + '</td><td>' + item.TP + '</td><td>' + item.DTFACT + '</td><td>' + item.TMPR + '</td><td>' + link + '</td></tr>';
 						});
 						stopsList += '</tbody></table>';
 					}else{
