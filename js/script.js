@@ -1551,9 +1551,10 @@ function frep_all(){	// Функция для всех отчетов
 							if (item.DT > ''){
 								intervalsList += '<tr><td colspan="10" class="text-center"><b>' + item.DT + '</b></td></tr>';
 							}else{
-								intervalsList += '<tr><td>' + item.INTERVAL + '</td><td>' + item.BEGADR + '</td><td>' + item.ENDADR + '</td><td>' + item.TBEG + '</td><td>' + item.TEND + '</td><td>' + item.LEN + '</td><td>' + item.AVVEL + '</td><td>' + item.MAXVEL + '</td><td>' + item.MOVETIME + '</td><td>' + item.STOPTIME + '</td></tr>';
+								intervalsList += '<tr><td>' + item.INTERVAL + '</td><td><a href="http://bpr_serv.bmk.by/rel/map.php?cmd=marker(mlat;mlon),(' + item.LATB + ';' + item.LONB + ')" target="_blank" title="Нажмите для просмотра на карте">' + item.BEGADR + '</a></td><td><a href="http://bpr_serv.bmk.by/rel/map.php?cmd=marker(mlat;mlon),(' + item.LATS + ';' + item.LONS + ')" target="_blank" title="Нажмите для просмотра на карте">' + item.ENDADR + '</a></td><td>' + item.TBEG + '</td><td>' + item.TEND + '</td><td>' + item.LEN + '</td><td>' + item.AVVEL + '</td><td>' + item.MAXVEL + '</td><td>' + item.MOVETIME + '</td><td>' + item.STOPTIME + '</td></tr>';
 							}
 						});
+						intervalsList += '<tr><th>' + result.INTERVAL + '</th><th>' + result.FBEG + '</a></th><th>' + result.FEND + '</a></th><th>' + result.FT1 + '</th><th>' + result.FT2 + '</th><th>' + result.FLEN + '</th><th>' + result.FAVVEL + '</th><th>' + result.FMAXVEL + '</th><th>' + result.FTMOVE + '</th><th>' + result.FTSTOP + '</th></tr>';
 						intervalsList += '</tbody></table>';
 					}else{
 						var intervalsList = 'отсутствуют';

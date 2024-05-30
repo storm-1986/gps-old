@@ -392,7 +392,11 @@ if (isset ($out)){
 					preg_match("/<AVVEL>(.+)<\/AVVEL>/sUi", $val, $intAvVel);
 					preg_match("/<MAXVEL>(.+)<\/MAXVEL>/sUi", $val, $intMaxVel);
 					preg_match("/<MOVETIME>(.+)<\/MOVETIME>/sUi", $val, $intMove);
-					preg_match("/<STOPTIME>(.+)<\STOPTIME>/sUi", $val, $intStop);
+					preg_match("/<STOPTIME>(.+)<\/STOPTIME>/sUi", $val, $intStop);
+					preg_match("/<LATB>(.+)<\/LATB>/sUi", $val, $intLatB);
+					preg_match("/<LONB>(.+)<\/LONB>/sUi", $val, $intLonB);
+					preg_match("/<LATS>(.+)<\/LATS>/sUi", $val, $intLatS);
+					preg_match("/<LONS>(.+)<\/LONS>/sUi", $val, $intLonS);
 					if (substr($intBegin[1], 0, 5) == '_____'){
 						$intervals[$i]['DT'] = str_replace(['_', ' '], '', $intBegin[1]);
 					}else{
@@ -415,14 +419,46 @@ if (isset ($out)){
 						$intervals[$i]['MAXVEL'] = $intMaxVel[1];
 						$intervals[$i]['MOVETIME'] = $intMove[1];
 						$intervals[$i]['STOPTIME'] = $intMove[1];
+						$intervals[$i]['LATB'] = $intLatB[1];
+						$intervals[$i]['LONB'] = $intLonB[1];
+						$intervals[$i]['LATS'] = $intLatS[1];
+						$intervals[$i]['LONS'] = $intLonS[1];
 						$intervals[$i]['DT'] = '';
 					}
 					$i++;
 				}
 			}
+			if (isset($intFBegin[1])){
+				$posBegin = strpos($intFBegin[1], ' - ');
+				$timeBegin = substr($intFBegin[1], 0, $posBegin);
+				$adrBegin = substr($intFBegin[1], $posBegin + 3);
+				$adrBegin = preg_replace($patterns, $replacements, $adrBegin);
+			}else{
+				$timeBegin = '';
+				$adrBegin = '';
+			}
+			if (isset($intFEnd[1])){
+				$posEnd = strpos($intFEnd[1], ' - ');
+				$timeEnd = substr($intFEnd[1], 0, $posEnd);
+				$adrEnd = substr($intFEnd[1], $posEnd + 3);
+				$adrEnd = preg_replace($patterns, $replacements, $adrEnd);
+			}else{
+				$timeEnd = '';
+				$adrEnd = '';
+			}
 			$result = array(
 				'ANUM' => $outAnum[1],
 				'DTBEG' => $outDtbeg[1],
+				'INTERVAL' => $timeBegin . '<br>' . $timeEnd,
+				'FBEG' => $adrBegin,
+				'FT1' => isset($tmprFBegin[1]) ? round($tmprFBegin[1], 1) : '',
+				'FEND' => $adrEnd,
+				'FT2' => isset($tmprFEnd[1]) ? round($tmprFEnd[1], 1) : '',
+				'FLEN' => isset($intFLen[1]) ? $intFLen[1] : '',
+				'FAVVEL' => isset($intFAvVel[1]) ? $intFAvVel[1] : '',
+				'FMAXVEL' => isset($intFMaxVel[1]) ? $intFMaxVel[1] : '',
+				'FTMOVE' => isset($intFMove[1]) ? $intFMove[1] : '',
+				'FTSTOP' => isset($intFStop[1]) ? $intFStop[1] : '',
 				'INTERVALS' => $intervals,
 			);
 		}
