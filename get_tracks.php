@@ -83,6 +83,7 @@ if (($sgod == $pogod)&&($smes == $pomes)&&($sch == $poch)){
 	}
 } // Конец запросов если выбран 1 день.
 else{  // Запрос для трека для 2 и более дней
+	$mq = $mq_sql = $mq_prev = $mqt = '';
 	if ($allday == 0){	// Запросы для промежутка времени
 
 		$fq = "(DDATE = '".$sdate."') AND (DTSTAMP >= '".$sgod."-".$smes."-".$sch." ".$sour.":".$smin.":00')";
@@ -91,8 +92,8 @@ else{  // Запрос для трека для 2 и более дней
 		$i = 0;
 		while ($sdate !== $podate){
 			$i++;
-			$sdate = strftime('%Y%m%d',mktime(0,0,0,$smes,$sch+$i,$sgod,-1));
-			$sdate_f = strftime('%Y-%m-%d', mktime(0, 0, 0, $smes, $sch + $i, $sgod, -1));
+			$sdate = date('Ymd', mktime(0, 0, 0, $smes, $sch + $i, $sgod));
+			$sdate_f = date('Y-m-d', mktime(0, 0, 0, $smes, $sch + $i, $sgod));
 			if ($sdate == $podate){
 				$eq = "(DDATE = '".$sdate."') AND (DTSTAMP <= '".$pogod."-".$pomes."-".$poch." ".$poour.":".$pomin.":59')";
 				$eq_sql = "(DDATE = '".$sdate_f."') AND (DTSTAMP <= '".$podate_f." ".$poour.":".$pomin.":59')";
@@ -121,8 +122,8 @@ else{  // Запрос для трека для 2 и более дней
 		$i = 0;
 		while ($sdate !== $podate){
 			$i++;
-			$sdate = strftime('%Y%m%d',mktime(0,0,0,$smes,$sch+$i,$sgod,-1));
-			$sdate_f = strftime('%Y-%m-%d', mktime(0, 0, 0, $smes, $sch + $i, $sgod, -1));
+			$sdate = date('Ymd', mktime(0, 0, 0, $smes, $sch + $i, $sgod));
+			$sdate_f = date('Y-m-d', mktime(0, 0, 0, $smes, $sch + $i, $sgod));
 			$mq .= " OR (ANUM = '".$car_id."') AND (DDATE = '".$sdate."')";
 			$mq_sql .= " OR (ANUM = '".$car_id."') AND (DDATE = '".$sdate_f."')";
 			$mq_prev .= " OR (ANUM = '".$car_id."') AND (DDATE = '".$sdate_f."') AND (VEL > ".$prev_skor.")";	// для запроса по превышению скорости
