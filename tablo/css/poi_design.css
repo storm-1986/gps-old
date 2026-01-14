@@ -1,0 +1,63 @@
+body{
+	font-family: Arial,Verdana,sans-serif;
+	font-size: 14px;
+	color: #000;
+	padding:  0px;
+	margin: 0px;
+	border: 0px;
+}
+
+a{
+	color: #000;
+}
+
+#all{
+	width: 100%;
+}
+
+table{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+tr{
+	text-align: center;
+}
+
+th{
+	border: 1px solid black;
+	font-weight: bold;
+	padding: 5px;
+}
+
+td{
+	border: 1px solid black;
+	padding: 5px;
+}
+
+label{
+cursor: pointer;	
+}
+
+.grtr{
+	background-color: #ebebeb;
+}
+
+.atd{
+cursor: pointer;	
+}
+
+#sel_poi{
+	margin: 5px 0px;
+	cursor: pointer;
+}
+
+#sel_type{
+	cursor: pointer;
+}
+
+.link_to_prop{
+	width: 100%;
+	text-align: center;
+	margin: 10px 0px;
+}
