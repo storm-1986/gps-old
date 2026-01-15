@@ -23,7 +23,9 @@ function getEnvValue($key, $default = null) {
 
 try {
     $conn = new PDO(
-        "sqlsrv:Server=" . getEnvValue('DB_HOST') . ";Database=" . getEnvValue('DB_NAME') . ";TrustServerCertificate=yes", getEnvValue('DB_USER'), getEnvValue('DB_PASS')
+        "sqlsrv: Server = " . getEnvValue('DB_HOST') . "; Database = " . getEnvValue('DB_NAME') . "; Encrypt = 0; TrustServerCertificate = 1", 
+        getEnvValue('DB_USER'), 
+        getEnvValue('DB_PASS')
     );
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
