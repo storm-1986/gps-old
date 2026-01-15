@@ -59,10 +59,14 @@
     <li class="nav-item">
     	<a class="nav-link <?php if (isset($_GET['osm'])) echo "active"?> px-md-3" href="?osm=1">Карты OpenStreet</a>
 	</li>
+<?php
+if ($_SESSION['userowner'] == 0){
+?>
     <li class="nav-item">
     	<a class="nav-link px-md-3" href="/tablo" target="_blank">Табло</a>
 	</li>
 <?php
+}
 if ($_SESSION['username'] !== 'velcom'){
 ?>
 	<li class="nav-item dropdown">
