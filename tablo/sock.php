@@ -10,7 +10,7 @@ ob_implicit_flush();
 //			echo "OK\n";
 		}
 //		echo 'Connect socket ... ';
-		$result = socket_connect($socket, $address, $port);
+		$result = socket_connect($socket, $address, $port_t);
 		if ($result === false){
 			throw new Exception('socket_connect() failed: '.socket_strerror(socket_last_error())."\n");
 		}else{

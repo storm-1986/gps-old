@@ -2,7 +2,7 @@
 header("Cache-Control: no-store, no-cache, must-revalidate"); 
 header("Expires: " . date("r"));
 
-include_once "options.php";
+include_once "../options.php";
 
 $anum = $_POST['car'];
 $dt_begin = $_POST['date_b'];
@@ -48,7 +48,7 @@ SELECT * FROM BD_PLAN WHERE (DTBEG  = '20180227' and ANUM = 'AE71611' AND PTYPE 
 		$sddate = $data_stops["DT"];
 		$point_type = $data_stops["PTYPE"];
 		$smena = $data_stops["SHIFT"];
-		$st_adr = iconv("CP1251", "UTF-8", $data_stops["ADDRESS"]);
+		$st_adr = $data_stops["ADDRESS"];
 		if ($point_type == 1){
 			$stop_type = 'Погрузка';
 		}else{

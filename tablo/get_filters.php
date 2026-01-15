@@ -2,7 +2,7 @@
 header("Cache-Control: no-store, no-cache, must-revalidate"); 
 header("Expires: " . date("r"));
 
-include_once "options.php";
+include_once "../options.php";
 
 $newqwery = $_POST['newq'];
 

@@ -1,5 +1,5 @@
 <?php
-include_once "options.php";
+include_once "../options.php";
 
 $day = date("d");
 $mes = date("m");

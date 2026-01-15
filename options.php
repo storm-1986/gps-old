@@ -35,8 +35,9 @@ catch( PDOException $e ) {
 
 // Настройки сокета
 
-$address   = getEnvValue('SOCKET_ADDRESS');
-$port      = getEnvValue('SOCKET_PORT');
+$address = getEnvValue('SOCKET_ADDRESS');
+$port    = getEnvValue('SOCKET_PORT');
+$port_t  = getEnvValue('SOCKET_PORT_T');
 
 $attempts  = 5;		// Кол-во попыток на ввод пароля
 // Настройки трекеров
