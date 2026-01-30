@@ -1,6 +1,6 @@
 function init(){
-var localUrl = 'http://cis-tile.savushkin.by/osm_tiles/{z}/{x}/{y}.png';
-var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var localUrl = 'https://cis-tile.savushkin.by/osm_tiles/{z}/{x}/{y}.png';
+var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var osmAttrib = 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
 
 var local_osm = L.tileLayer(localUrl, {attribution: osmAttrib, maxZoom: 18}), inet_osm  = L.tileLayer(osmUrl, {attribution: osmAttrib, maxZoom: 18});

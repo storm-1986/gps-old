@@ -38,8 +38,8 @@ if (vs < 600) vs = 600;
 
 jQuery('#map').css('height',vs+'px');
 
-var localUrl = 'http://cis-tile.savushkin.by/osm_tiles/{z}/{x}/{y}.png';
-var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var localUrl = 'https://cis-tile.savushkin.by/osm_tiles/{z}/{x}/{y}.png';
+var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var osmAttrib = 'Savushkin';
 
 var inet_osm  = L.tileLayer(osmUrl, {attribution: osmAttrib, maxZoom: 18});

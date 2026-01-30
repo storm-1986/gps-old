@@ -37,9 +37,9 @@ var check_adr = jQuery('#check_dom').val();
 var localUrl = '../images/osm_tiles/{z}/{x}/{y}.png';
 var localUrl = 'http://cis-tile.savushkin.by/osm_tiles/{z}/{x}/{y}.png';
 */
-var localUrl = 'http://by-tile.savushkin.by/osm_tiles/{z}/{x}/{y}.png';
-var SNGUrl = 'http://cis-tile.savushkin.by/osm_tiles/{z}/{x}/{y}.png';
-var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var localUrl = 'https://by-tile.savushkin.by/osm_tiles/{z}/{x}/{y}.png';
+var SNGUrl = 'https://cis-tile.savushkin.by/osm_tiles/{z}/{x}/{y}.png';
+var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 var osmAttrib = 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
 
 var local_blr = L.tileLayer(localUrl, {attribution: osmAttrib, maxZoom: 18}),local_sng = L.tileLayer(SNGUrl, {attribution: osmAttrib, maxZoom: 18}), inet_osm  = L.tileLayer(osmUrl, {attribution: osmAttrib, maxZoom: 18});
