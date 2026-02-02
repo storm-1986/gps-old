@@ -41,17 +41,28 @@ var osmAttrib = 'Savushkin';
 var inet_osm  = L.tileLayer(osmUrl, {attribution: osmAttrib, maxZoom: 18});
 var local_osm = L.tileLayer(localUrl, {attribution: osmAttrib, maxZoom: 18});
 
-map = L.map('map', {
-	center: [52.623060, 25.515747],
-	zoom: 8,
-	doubleClickZoom: false,
-	layers: [local_osm]
-});
-
-var baseLayers = {
-	"Локальная карта OSM": local_osm,
-	"Карта OSM": inet_osm
-};
+if(isMobile.any()){
+	map = L.map('map', {
+			center: [52.623060, 25.515747],
+			zoom: 8,
+			doubleClickZoom: false,
+			layers: [inet_osm]
+	});
+	var baseLayers = {
+			"Карта OSM": inet_osm
+	}
+}else{
+	map = L.map('map', {
+			center: [52.623060, 25.515747],
+			zoom: 8,
+			doubleClickZoom: false,
+			layers: [local_osm]
+	});
+	var baseLayers = {
+			"Локальная карта OSM": local_osm,
+			"Карта OSM": inet_osm
+	};
+}
 
 L.control.scale().addTo(map);
 L.Control.measureControl().addTo(map);
