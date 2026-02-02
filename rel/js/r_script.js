@@ -21,10 +21,6 @@ var isMobile = {
     }
 };
 
-var url = window.location.href;
-var zavod = 1;
-if (url.substring(7,15) !== 'bpr_serv') zavod = 0;
-
 if (navigator.userAgent.match("MSIE")){
 	vs = document.documentElement.clientHeight;
 	var sh = document.documentElement.clientWidth
@@ -45,30 +41,17 @@ var osmAttrib = 'Savushkin';
 var inet_osm  = L.tileLayer(osmUrl, {attribution: osmAttrib, maxZoom: 18});
 var local_osm = L.tileLayer(localUrl, {attribution: osmAttrib, maxZoom: 18});
 
-if(isMobile.any() || zavod == 0){
-	map = L.map('map', {
-			center: [52.623060, 25.515747],
-			zoom: 8,
-			doubleClickZoom: false,
-/*			renderer : labelTextCollision,*/			
-			layers: [inet_osm]
-	});
-	var baseLayers = {
-			"Карта OSM": inet_osm
-	}
-}else{
-	map = L.map('map', {
-			center: [52.623060, 25.515747],
-			zoom: 8,
-			doubleClickZoom: false,
-/*			renderer : labelTextCollision,*/			
-			layers: [local_osm]
-	});
-	var baseLayers = {
-			"Локальная карта OSM": local_osm,
-			"Карта OSM": inet_osm
-	};
-}
+map = L.map('map', {
+	center: [52.623060, 25.515747],
+	zoom: 8,
+	doubleClickZoom: false,
+	layers: [local_osm]
+});
+
+var baseLayers = {
+	"Локальная карта OSM": local_osm,
+	"Карта OSM": inet_osm
+};
 
 L.control.scale().addTo(map);
 L.Control.measureControl().addTo(map);
