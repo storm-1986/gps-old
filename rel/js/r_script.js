@@ -69,6 +69,39 @@ L.Control.measureControl().addTo(map);
 
 layerControl = L.control.layers(baseLayers).addTo(map);
 
+var customControl = L.Control.extend({
+
+  options: {
+    position: 'topleft' 
+  },
+
+  onAdd: function (map) {
+    var container = L.DomUtil.create('div', 'leaflet-findbtn');
+
+    container.onclick = function(){
+      shform();
+    }
+
+    return container;
+  }
+});
+
+map.addControl(new customControl());
+
+var c = new L.Control.Coordinates().addTo(map);
+
+map.on('mousemove', function(e) {
+    c.setCoordinates(e);
+});
+
+_getClosestPointIndex = function(lPoint, arrayLPoints) {
+	var distanceArray = [];
+	for ( var i = 0; i < arrayLPoints.length; i++ ) {
+		distanceArray.push( lPoint.distanceTo(arrayLPoints[i]) );
+	}
+	return distanceArray.indexOf(  Math.min.apply(null, distanceArray) );
+}
+
 map.on('dblclick', function(e) {
 	text = e.latlng.lat.toFixed(6) + ", " + e.latlng.lng.toFixed(6);
 	window.prompt ("Чтобы скопировать текст в буфер обмена, нажмите Ctrl+C", text);
