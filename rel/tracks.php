@@ -42,9 +42,6 @@ if ($sdate == $podate){
 	// Запрос по расходу топлива
 	$sql_q_topl = "SELECT FUEL, DTSTAMP FROM BD_GBR WHERE ANUM = '".$car_id."' AND DDATE = '".$sdate_f."' AND TTIME >= '".$sour.":".$smin.":00' AND TTIME <= '".$poour.":".$pomin.":00' ORDER BY DTSTAMP";
 	
-	// ads
-	$query = "SELECT * FROM BD_GBR WHERE (ANUM = '".$car_id."') AND (DDATE = '".$sdate."') AND (TTIME >= '".$sour.":".$smin.":00') AND (TTIME <= '".$poour.":".$pomin.":00') ORDER BY DTSTAMP";
-
 // Запрос для планируемого трека
 
 	if ($dt > ''){		//частный случай при выезде машины ДО даты, заданной в $dtb
@@ -64,9 +61,14 @@ else{
 	$fq = "(DDATE = '".$sdate_f."') AND (DTSTAMP >= '".$sdate_f." ".$sour.":".$smin.":00')";
 
 	$iii = 0;
-	while ($sdate_f !== $podate_f){
+	$eq = '';
+	$mq = '';
+	$mqt = '';
+	while ($sdate_f != $podate_f){
 		$iii++;
-		$sdate_f = strftime('%Y-%m-%d', mktime(0, 0, 0, $smes, $sch + $iii, $sgod, -1));
+		$date = new DateTime();
+		$date->setDate($sgod, $smes, $sch + $iii);
+		$sdate_f = $date->format('Y-m-d');
 		if ($sdate_f == $podate_f){
 			$eq = "(DDATE = '".$sdate_f."') AND (DTSTAMP <= '".$podate_f." ".$poour.":".$pomin.":00')";
 		}
@@ -79,25 +81,6 @@ else{
 
 	// Запрос по расходу топлива
 	$sql_q_topl = "SELECT DDATA, DTSTAMP FROM BD_ADD_DATA WHERE ANUM = '".$car_id."' AND (TYPE_DATA = 34 OR TYPE_DATA = 89) AND ".$fq.$mqt." OR ANUM = '".$car_id."' AND (TYPE_DATA = 34 OR TYPE_DATA = 89) AND ".$eq."ORDER BY DTSTAMP";
-
-
-// ADS
-
-	$fq = "(DDATE = '".$sdate."') AND (DTSTAMP >= '".$sgod."-".$smes."-".$sch."T".$sour.":".$smin.":00')";
-
-	$iii = 0;
-	while ($sdate !== $podate){
-		$iii++;
-		$sdate = strftime('%Y%m%d', mktime(0, 0, 0, $smes, $sch + $iii, $sgod, -1));
-		if ($sdate == $podate){
-			$eq = "(DDATE = '".$sdate."') AND (DTSTAMP <= '".$pogod."-".$pomes."-".$poch."T".$poour.":".$pomin.":00')";
-		}
-		else{
-			$mq .= " OR (ANUM = '".$car_id."') AND (DDATE = '".$sdate."')";
-		}
-	}
-	$query = "SELECT * FROM BD_GBR WHERE (ANUM = '".$car_id."') AND ".$fq.$mq." OR (ANUM = '".$car_id."') AND ".$eq." ORDER BY DTSTAMP";
-
 
 // Запрос для планируемого трека
 	if ($dt > ''){		//частный случай при выезде машины ДО даты, заданной в $dtb
@@ -209,7 +192,7 @@ if ($tr == 'p' || $tr == 'b' ){
 		$ar_pcoord[$pi]['lat'] = $platt;
 		$ar_pcoord[$pi]['lon'] = $plongt;
 		$ar_pcoord[$pi]['date'] = substr($pddate, 8, 2) . "." . substr($pddate, 5, 2) . "." . substr($pddate, 0, 4) . "T" . substr($pddate, 11, 5);
-		if ($count < 3){ // брать крайние точки при выводе только планового маршрута и при выводе обоих маршрутов, если в фактическом меньше 2 точек или он отсутствует
+		if (isset($count) && $count < 3){ // брать крайние точки при выводе только планового маршрута и при выводе обоих маршрутов, если в фактическом меньше 2 точек или он отсутствует
 			if ($pi == 0){
 			$maxlat = $platt;
 			$minlat = $platt;
