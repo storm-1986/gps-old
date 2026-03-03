@@ -7,19 +7,15 @@ include_once "../options.php";
 $anum = $_POST['car'];
 $dt_begin = $_POST['date_b'];
 $stops = $_POST['stops'];
-//$anum = 'AE67861';
 
 $day = date("d");
 $mes = date("m");
 $year = date("Y");
 
 $mainq = "SELECT * FROM BD_PLAN WHERE ANUM = '" . $anum . "' AND DTBEG  = '" . $dt_begin . "' ORDER BY DT";
-
-//$qpltrack = ads_do($rConn,$mainq);
 $qpltrack = $conn->query($mainq);		// запрос планового маршрута
 
 $i = 0;
-//while (ads_fetch_row($qpltrack)){
 while($data_track = $qpltrack->fetch( PDO::FETCH_ASSOC )){
 	$platt = $data_track["LAT"];
 	$plongt = $data_track["LON"];
@@ -32,15 +28,10 @@ while($data_track = $qpltrack->fetch( PDO::FETCH_ASSOC )){
 }
 
 if ($i > 0){
-/*
-SELECT * FROM BD_PLAN WHERE (DTBEG  = '20180227' and ANUM = 'AE71611' AND PTYPE <> 5) or (DTBEG  = '20180227' and ANUM = '_AE71611') ORDER BY DT
-*/
 	$text_qplstops = "SELECT * FROM BD_PLAN WHERE (DTBEG  = '".$dt_begin."' AND ANUM = '".$anum."' AND PTYPE <> 5) ORDER BY DT";
-//	$qplstops = ads_do($rConn,$text_qplstops);
 	$qplstops = $conn->query($text_qplstops);		// запрос стоянок планового маршрута
 	$count = 0;
 	$_count = 0;
-//	while (ads_fetch_row($qplstops)){
 	while($data_stops = $qplstops->fetch( PDO::FETCH_ASSOC )){
 		$db_anum = trim($data_stops["ANUM"]); 
 		$slatt = $data_stops["LAT"];
@@ -88,18 +79,6 @@ SELECT * FROM BD_PLAN WHERE (DTBEG  = '20180227' and ANUM = 'AE71611' AND PTYPE 
 		$rspeed = $data_last["VEL"];
 		$i++;
 	}
-	// if ($i == 0){	// Берем координаты из ADS если нет в SQL
-	// 	$qrpos = ads_do($rConn,"SELECT TOP 1 START AT 1 LASTLAT, LASTLONG, LASTDATE, LASTTIME, LASTSPEED FROM GPS_LAST WHERE ANUM = '".$anum."' ORDER BY LASTDATE+LASTTIME DESC");		// запрос последних координат
-	// 	// $qrpos = ads_do($rConn,"SELECT TOP 1 START AT 1 LATT, LONGT, DDATE, TTIME, VEL FROM BD_GBR WHERE ANUM = '".$anum."' ORDER BY DDATE+TTIME DESC");		// запрос последних координат
-
-	// 	while (ads_fetch_row($qrpos)){
-	// 		$rlat = ads_result($qrpos, "LASTLAT");
-	// 		$rlon = ads_result($qrpos, "LASTLONG");
-	// 		$rdate = ads_result($qrpos, "LASTDATE");
-	// 		$rtime = ads_result($qrpos, "LASTTIME");
-	// 		$rspeed = ads_result($qrpos, "LASTSPEED");
-	// 	}
-	// }
 	$rdttime = "<b>".$anum."</b><br/>".substr($rdate, 8, 2).".".substr($rdate, 5, 2).".".substr($rdate, 0, 4)." ".$rtime."<br/>Скорость: ".$rspeed." км/ч";
 
 	$result = array('type'=>'success','tracks'=>$ar_pcoord,'pstops'=>$ar_stops,'r_lat'=>$rlat,'r_lon'=>$rlon,'r_text'=>$rdttime,'query'=>$text_qplstops,'test_q'=>$text_qplstops);

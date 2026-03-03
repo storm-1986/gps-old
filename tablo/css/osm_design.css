@@ -60,6 +60,7 @@ html, body, #map {
 }
 
 .top_z{
+	font-size: 20px;
 	font-weight: bold;
 	margin-bottom: 10px;
 	cursor: pointer;
@@ -67,4 +68,11 @@ html, body, #map {
 
 #stops_list{
 	display: none;
+    padding: 5px 10px;
+	background: rgba(255, 255, 255, 0.7);
+	border-radius: 10px;
+}
+
+#stops_list div{
+	margin: 5px 0;
 }

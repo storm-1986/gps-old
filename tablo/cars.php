@@ -23,19 +23,19 @@ $sec = date("s");
 <div id="ctrlfiltr" onclick="shfiltr()">Раскрыть фильтры</div>
 <div id="filtr">
 <div class="fstatus">
-	<div>Тип машины</div>
+	<div class="z_filter">Тип машины</div>
 	<div><input type="checkbox" name="mol" id="mol" value="1" <?php if (isset($_GET['mol'])) echo "checked=\"checked\""?> /><label for="mol">Молоковозы</label></div>
 	<div><input type="checkbox" name="gryz" id="gryz" value="0" <?php if (isset($_GET['gryz'])) echo "checked=\"checked\""?> /><label for="gryz">Грузовые</label></div>
 </div>
 <div class="fstatus">
-	<div>Статус</div>
+	<div class="z_filter">Статус</div>
 	
 	<div><input type="checkbox" name="st_ok" id="st_ok" value="ok" <?php if (isset($_GET['st_ok'])) echo "checked=\"checked\""?> /><label for="st_ok">Все машины</label></div>
 	<div><input type="checkbox" name="st_er" id="st_er" value="err" <?php if (isset($_GET['st_er'])) echo "checked=\"checked\""?> /><label for="st_er">C ошибками</label></div>
 
 </div>
 <div class="fstatus">
-	<div>Скорость</div>
+	<div class="z_filter">Скорость</div>
 	<div><input type="checkbox" name="skor0" id="skor0" value="0" <?php if (isset($_GET['skor0'])) echo "checked=\"checked\""?> /><label for="skor0">0 км/ч</label></div>
 	<div><input type="checkbox" name="skor1-30" id="skor1-30" value="1" <?php if (isset($_GET['skor1-30'])) echo "checked=\"checked\""?> /><label for="skor1-30">1 - 30 км/ч</label></div>
 	<div><input type="checkbox" name="skor30-70" id="skor30-70" value="2" <?php if (isset($_GET['skor30-70'])) echo "checked=\"checked\""?> /><label for="skor30-70">31 - 70 км/ч</label></div>
@@ -43,7 +43,7 @@ $sec = date("s");
 	<div><input type="checkbox" name="skor101" id="skor101" value="4" <?php if (isset($_GET['skor101'])) echo "checked=\"checked\""?> /><label for="skor101">> 100 км/ч</label></div>
 </div>
 <div class="fstatus">
-	<div>Филиалы</div>
+	<div class="z_filter">Филиалы</div>
 <?php
 $qfil = $conn->query("SELECT * FROM SP_LCTN");
 $count_fil = 0;
@@ -57,10 +57,10 @@ while($data_fil = $qfil->fetch( PDO::FETCH_ASSOC )){
 }
 ?>
 </div>
-<input id="filtr_btn" type="button" value="Применить" onclick="setfiltres()"/>
+<input id="filtr_btn" class="btn btn-primary" type="button" value="Применить" onclick="setfiltres()"/>
 </div>
 <table id="mtbl">
-<tr>
+<thead>
 <?php
 $qsort = "";
 if (isset($_GET['sort']) && $_GET['sort'] == 'auto'){
@@ -137,16 +137,16 @@ if (isset($_GET['sort']) && $_GET['sort'] == 'nedo'){
 	</th>
 	<th>
 		<input type="hidden" name="sort2_type" id="sort2_type" value="<?php echo $sort2_type;?>"/>
-		<span class="atd" onclick="sort('status')">Статус</span>
+		<span class="atd" onclick="sort('status')">Сост</span>
 	</th>
-	<th>
+	<th width="105px">
 		<input type="hidden" name="sort5_type" id="sort5_type" value="<?php echo $sort5_type;?>"/>
 		<span class="atd" onclick="sort('plan_tr')">Плановый маршрут</span>
 	</th>
-	<th>Фактический маршрут</th>
+	<th width="105px">Фактический маршрут</th>
 	<th>
 		<input type="hidden" name="sort6_type" id="sort6_type" value="<?php echo $sort6_type;?>"/>
-		<span class="atd" onclick="sort('nedo')">Выполнение</span>
+		<span class="atd" onclick="sort('nedo')">Выполн</span>
 	</th>
 	<th>Адрес</th>
 	<th>Скор</th>
@@ -158,7 +158,7 @@ if (isset($_GET['sort']) && $_GET['sort'] == 'nedo'){
 		<input type="hidden" name="sort4_type" id="sort4_type" value="<?php echo $sort4_type;?>"/>
 		<span class="atd" onclick="sort('owner')">Владелец</span>
 	</th>
-</tr>
+</thead>
 <?php
 $all_filtrs = "";
 $all_filtrs1 = "";
@@ -308,10 +308,6 @@ while($data_auto = $qauto->fetch( PDO::FETCH_ASSOC )){
 }
 ?>
 </table>
-<div class="link_to_prop"><input type="button" value="Настройки отображения" onclick="parent.location.href='index.php?exit=1'"/></div>
-<?php
-//print_r($_GET);
-?>
 </form>
 </div>
 </body>

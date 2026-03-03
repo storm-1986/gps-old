@@ -27,6 +27,7 @@ tr{
 th{
 	border: 1px solid black;
 	font-weight: bold;
+	padding: 5px 0;
 }
 
 td{
@@ -48,7 +49,8 @@ cursor: pointer;
 }
 
 #ctrlfiltr{
-	margin: 5px 0px;
+	margin: 10px;
+	font-weight: bold;
 	cursor: pointer;
 }
 
@@ -61,12 +63,17 @@ cursor: pointer;
 
 .fstatus{
     display: inline-block;
-    margin: 5px;
     vertical-align: top;
+	width: 24%;
+}
+
+.z_filter{
+	font-weight: bold;
+	margin: 5px 0;
 }
 
 #filtr_btn{
-	margin: 0px 0px 10px 100px;
+	margin: 10px auto;
 	cursor: pointer;
 	display: block;
 }
