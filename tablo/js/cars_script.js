@@ -1,13 +1,6 @@
 function setCookie(name, value, daysToLive) 
 {
 	var cookie = name + "=" + encodeURIComponent(value);
-/*
-	if (typeof daysToLive === "number"){
-		cookie += "; max-age=" + (daysToLive*60*60*24);
-	}else{
-		throw new Error('Параметр daysToLive должен быть числом.');
-	}
-*/
 	document.cookie = cookie;
 }
 
