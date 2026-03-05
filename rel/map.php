@@ -108,8 +108,8 @@ if (isset($res['minlat'], $res['minlon'], $res['maxlat'], $res['maxlon'])){
 function selcolor($i_col){
 	if ($i_col == 0) $trcolor = "blue";		// Цвет трека
 	elseif ($i_col == 1) $trcolor = "red";
-	elseif ($i_col == 2) $trcolor = "black";
-	elseif ($i_col == 3) $trcolor = "green";
+	elseif ($i_col == 2) $trcolor = "green";
+	elseif ($i_col == 3) $trcolor = "black";
 	elseif ($i_col == 4) $trcolor = "indigo";
 	elseif ($i_col == 5) $trcolor = "darkred";
 	elseif ($i_col == 6) $trcolor = "darkblue";
@@ -553,11 +553,11 @@ if ($com == 'track'){	// Для вывода маршрутов
 	unset($dot_time);
 	$trscript .= $fstopm;
 //	echo $tr_coord;
-	$x .= "<div id=\"cl_$color\" class=\"cl_all\" onClick=\"gototr(arrow$i)\">$anum</div>";
+	$x .= "<div style=\"color: $color\" class=\"cl_all\" onClick=\"gototr(arrow$i)\">$anum</div>";
 	$i_col++;
 	}
 	if (($tr == 'f' || $tr == 'b') && $count < 2){
-		$x .= "<div id=\"cl_$color\" class=\"cl_all\">Нет фактического трека для $anum</div>";
+		$x .= "<div style=\"color: $color\" class=\"cl_all\">Нет фактического трека для $anum</div>";
 		$i_col++;
 	}	
 	if (($tr == 'p' || $tr == 'b') && $pi > 1){		//////////////////////// ВЫВОД ПЛАНОВОГО ТРЕКА ////////////////////////////////
@@ -639,7 +639,7 @@ while($data_vprid = $vpresultid->fetch( PDO::FETCH_ASSOC )){
 
 $pstop_m .= "plan_stops_LayerGroup.addTo(map); layerControl.addOverlay(plan_stops_LayerGroup, 'Плановые стоянки $car_id');";
 
-$x .= "<div id=\"cl_$color\" class=\"cl_all\" onClick=\"gototr(parrow$i),sh_sub($i)\">$anum плановый</div><div id=\"sub_$i\" class=\"sub_cl_all\"></div>";
+$x .= "<div style=\"color: $color\" class=\"cl_all\" onClick=\"gototr(parrow$i),sh_sub($i)\">$anum плановый</div><div id=\"sub_$i\" class=\"sub_cl_all\"></div>";
 		$i_col++;
 		
 	$trscript .= $pstop_m;
@@ -648,11 +648,11 @@ $x .= "<div id=\"cl_$color\" class=\"cl_all\" onClick=\"gototr(parrow$i),sh_sub(
 	
 
 	if ($tr == 'p' && $pi < 2){
-		$x .= "<div id=\"cl_$color\" class=\"cl_all\">Нет планового трека для $anum</div>";
+		$x .= "<div style=\"color: $color\" class=\"cl_all\">Нет планового трека для $anum</div>";
 		$i_col++;
 	}
 	if ($tr == 'b' && $pi < 2){
-		$x .= "<div id=\"cl_$color\" class=\"cl_all\">Нет планового трека для $anum</div>";
+		$x .= "<div style=\"color: $color\" class=\"cl_all\">Нет планового трека для $anum</div>";
 		$i_col++;
 	}
 //		if ($fst == 1 && isset($out) && $resout == '') $fn_tr .= "showstops('$anum'); ";
