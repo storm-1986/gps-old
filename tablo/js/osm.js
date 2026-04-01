@@ -10,7 +10,7 @@ map = L.map('map', {
 			zoom: 8,
 			doubleClickZoom: false,
 /*			renderer : labelTextCollision,*/			
-			layers: [local_osm]
+			layers: [inet_osm]
 		});
 
 L.control.scale().addTo(map);

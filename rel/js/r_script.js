@@ -56,7 +56,7 @@ if(isMobile.any()){
 			center: [52.623060, 25.515747],
 			zoom: 8,
 			doubleClickZoom: false,
-			layers: [local_osm]
+			layers: [inet_osm]
 	});
 	var baseLayers = {
 			"Локальная карта OSM": local_osm,
