@@ -61,7 +61,7 @@ if(isMobile.any() || (check_adr == 1)){
 			zoom: 8,
 			doubleClickZoom: false,
 /*			renderer : labelTextCollision,*/			
-			layers: [local_sng]
+			layers: [inet_osm]
 	});
 	var baseLayers = {
 			"Локальная Беларусь OSM": local_blr,
