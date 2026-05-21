@@ -142,11 +142,13 @@ if ($nastr == 1){
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>GPS control 2</title>
 	</head>
+<!--
 	<body>
-		<h1 style="text-align: center;">Сайт временно не работает. проводятся технические работы.</h1>
+		<h1 style="text-align: center;">Сайт временно не работает. Проводятся технические работы.</h1>
 	</body>
+-->
 	<?php
-	exit;
+//	exit;
 	$site1 = "cars.php?m=4";
 	$site2 = "osm.php";
 
