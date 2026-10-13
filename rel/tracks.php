@@ -1,4 +1,8 @@
 <?php
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
+    http_response_code(403);
+    exit('Forbidden');
+}
 
 if ($dt > ''){
 	$sgod_dt = substr($dt,0,4);

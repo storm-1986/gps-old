@@ -138,59 +138,6 @@ function gotosub(lat,lon){
 	map.setView(new L.LatLng(lat, lon), 17);
 }
 
-function ferms(){
-	var user = jQuery('#user').val();
-	var url = 'get_ferms.php';
-	jQuery.get(
-		url,
-		"user=" + user,
-		function (result){
-			if (result.type == 'error'){
-				alert (result.errmsg);
-				return(false);
-			}
-			else{
-				if (window.marker){
-					for(i=0;i<marker.length;i++){
-						map.removeLayer(marker[i]);
-					}
-				}
-				$('#route_info').html('');
-				var inshidel = '';
-				marker = new Array();
-				var i = 0;
-				jQuery(result.ar_ferms).each(function(){
-					var params = jQuery(this).attr('params');
-					var forpopup = "";
-					var counter = 0;
-					jQuery(params).each(function(){
-						if (counter == 0){
-							var ch_fl = 'checked';
-						}else{
-							var ch_fl = '';
-						}
-						var r_nm = jQuery(this).attr('r_id').split('_')[1];
-						forpopup += "<input type = 'radio' name = 'reis' id = 'reis"+jQuery(this).attr('nz')+"' value = '"+jQuery(this).attr('nz')+"' "+ch_fl+"> <label for='reis"+jQuery(this).attr('nz')+"' onClick=select_mrow('"+jQuery(this).attr('r_id')+"')><b>"+jQuery(this).attr('anum')+"</b> "+r_nm+" №"+jQuery(this).attr('npp')+", вес: <b>"+jQuery(this).attr('ves')+"</b> тонн,<br/> пл. время: <b>"+jQuery(this).attr('dt_reisa')+"</b>, р. время: <b>"+jQuery(this).attr('dt_fact')+"</b>, смена: "+jQuery(this).attr('smena')+"</label><br/>";
-						inshidel += "<input type='hidden' id='reis_id"+jQuery(this).attr('nz')+"' value='"+jQuery(this).attr('r_id')+"'><input type='hidden' id='npp"+jQuery(this).attr('nz')+"' value='"+jQuery(this).attr('npp')+"'>";
-						counter++;
-					});
-					$('#route_info').html(inshidel);
-					if (~jQuery(this).attr('ferm_id').indexOf("_")){
-						var textpopup = "<table><tr><td colspan='2'><b>"+jQuery(this).attr('ferm_name')+"</b></td></tr><tr><td colspan='2'><b>"+jQuery(this).attr('hoz')+"</b></td></tr><tr><td><b>подъезд:</b></td><td>"+jQuery(this).attr('ferm_pdzd')+"т.</td></tr><tr><td width='100px'><b>Тип стоянки:</b></td><td>"+jQuery(this).attr('ferm_tstop')+"</td></tr><tr><td><b>Лаб. контроль: </b></td><td>"+jQuery(this).attr('ferm_lab')+"</td></tr><tr><td><b>Тип авто: </b></td><td>"+jQuery(this).attr('tip_auto')+"</td></tr></table><br/>Точка используется в следующих маршрутах:<br/>"+forpopup+"<input type='button' class='popupbtn' value='Прикрепить к другому маршруту' onclick=dialwin('"+jQuery(this).attr('ferm_id')+"',"+jQuery(this).attr('ferm_lat')+","+jQuery(this).attr('ferm_lon')+")><br/><input type='button' class='popupbtn' value='Изменить позицию в маршруте' onclick=dialwin2('"+jQuery(this).attr('ferm_id')+"',"+jQuery(this).attr('ferm_lat')+","+jQuery(this).attr('ferm_lon')+")>"
-					}else{
-						var textpopup = "<table><tr><td colspan='2'><b>"+jQuery(this).attr('ferm_name')+"</b></td></tr><tr><td colspan='2'><b>"+jQuery(this).attr('hoz')+"</b></td></tr><tr><td><b>подъезд:</b></td><td>"+jQuery(this).attr('ferm_pdzd')+"т.</td></tr><tr><td width='100px'><b>Тип стоянки:</b></td><td>"+jQuery(this).attr('ferm_tstop')+"</td></tr><tr><td><b>Лаб. контроль: </b></td><td>"+jQuery(this).attr('ferm_lab')+"</td></tr><tr><td><b>Тип авто: </b></td><td>"+jQuery(this).attr('tip_auto')+"</td></tr></table>";
-					}
-					var LamMarker = new L.marker([jQuery(this).attr('ferm_lat'), jQuery(this).attr('ferm_lon')],{title: jQuery(this).attr('ferm_id')}).bindPopup(textpopup);
-					marker.push(LamMarker);
-					map.addLayer(marker[i]);
-					i++;
-				});
-			}
-		},
-		"json"
-	);
-}
-
 function select_mrow(id_mrow){
 	jQuery('#list').jqGrid('setSelection',id_mrow);
 }

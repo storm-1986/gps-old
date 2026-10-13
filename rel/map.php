@@ -15,6 +15,9 @@ parse_str($url, $res);
 $cmd = $res['cmd'];
 //echo $cmd;		// Тест вывод команд из урл
 
+// Белый список цветов маркеров
+$valid_colors = ['white','red','darkred','mediumslateblue','darkorange','sienna','green','olive','darkgoldenrod','blue','darkblue','deepskyblue','mediumorchid','indigo','mediumseagreen','teal','indianred','gold','dimgray','darkviolet','black'];
+
 if (isset($res['minlat'], $res['minlon'], $res['maxlat'], $res['maxlon'])){
 	$s_minlat = $res['minlat'] * 1;
 	$s_minlon = $res['minlon'] * 1;
@@ -159,6 +162,43 @@ if ($com == 'track'){	// Для вывода маршрутов
 		$i++;
 	}
 	//print_r($tr_arr);		// итоговый многомерный массив с треками
+	// === Валидация параметров cmd=track ===
+	if (count($tr_arr) > 30) {
+		http_response_code(400);
+		exit('Bad request: too many tracks');
+	}
+	$err_flag = false;
+	foreach ($tr_arr as $k => &$vv) {
+		$v_anum  = $vv['anum']  ?? '';
+		$v_tr    = $vv['tr']    ?? '';
+		$v_fst   = $vv['fst']   ?? '';
+		$v_dtb   = $vv['dtb']   ?? '';
+		$v_dte   = $vv['dte']   ?? '';
+		$v_shift = $vv['shift'] ?? '';
+		$v_dt    = $vv['dt']    ?? '';
+		$v_ntrip = $vv['ntrip'] ?? '';
+
+		// anum: латиница + цифры, 1-10 символов. Пусто — допустимо (шаблонная строка)
+		if ($v_anum !== '' && !preg_match('/^[A-Za-z0-9]{1,10}$/', $v_anum)) { $err_flag = true; break; }
+		// tr: f/p/b или пусто
+		if ($v_tr !== '' && !in_array($v_tr, ['f','p','b'], true)) { $err_flag = true; break; }
+		// fst: 0/1 или пусто
+		if ($v_fst !== '' && !in_array($v_fst, ['0','1'], true)) { $err_flag = true; break; }
+		// dtb, dte: 14 цифр (YYYYMMDDHHMMSS) или пусто
+		if ($v_dtb !== '' && !preg_match('/^\d{14}$/', $v_dtb)) { $err_flag = true; break; }
+		if ($v_dte !== '' && !preg_match('/^\d{14}$/', $v_dte)) { $err_flag = true; break; }
+		// dt: 8 цифр (YYYYMMDD) или пусто
+		if ($v_dt !== '' && !preg_match('/^\d{8}$/', $v_dt)) { $err_flag = true; break; }
+		// shift, ntrip: неотрицательные целые, до 5 цифр
+		if ($v_shift !== '' && !preg_match('/^\d{1,5}$/', $v_shift)) { $err_flag = true; break; }
+		if ($v_ntrip !== '' && !preg_match('/^\d{1,5}$/', $v_ntrip)) { $err_flag = true; break; }
+	}
+	unset($vv);
+	if ($err_flag) {
+		http_response_code(400);
+		exit('Bad request');
+	}
+	// === Конец валидации ===
 	$i = 0;
 	$i_col = 0;
 	$trscript = '';
@@ -679,6 +719,39 @@ $x .= "<div style=\"color: $color\" class=\"cl_all\" onClick=\"gototr(parrow$i),
 		}
 		$i++;
 	}
+	// === Валидация параметров cmd=marker ===
+	if (count($mr_arr) > 100) {
+		http_response_code(400);
+		exit('Bad request: too many markers');
+	}
+	$err_flag_m = false;
+	foreach ($mr_arr as $k => &$vv) {
+		$m_mlat  = $vv['mlat']  ?? '';
+		$m_mlon  = $vv['mlon']  ?? '';
+		$m_color = $vv['color'] ?? '';
+		$m_nm    = $vv['nm']    ?? '';
+		$m_mtxt  = $vv['mtxt']  ?? '';
+		$m_rad   = $vv['rad']   ?? '';
+
+		// mlat: число, -90..90
+		if ($m_mlat !== '' && (!is_numeric($m_mlat) || $m_mlat < -90 || $m_mlat > 90)) { $err_flag_m = true; break; }
+		// mlon: число, -180..180
+		if ($m_mlon !== '' && (!is_numeric($m_mlon) || $m_mlon < -180 || $m_mlon > 180)) { $err_flag_m = true; break; }
+		// color: из белого списка или пусто
+		if ($m_color !== '' && !in_array(strtolower($m_color), $valid_colors, true)) { $err_flag_m = true; break; }
+		// nm: либо целое число (до 10 цифр), либо base64-безопасная строка
+		if ($m_nm !== '' && !preg_match('/^[A-Za-z0-9_=+\/-]{0,200}$/', $m_nm)) { $err_flag_m = true; break; }
+		// mtxt: base64-безопасная строка
+		if ($m_mtxt !== '' && !preg_match('/^[A-Za-z0-9_=+\/-]{0,2000}$/', $m_mtxt)) { $err_flag_m = true; break; }
+		// rad: целое, до 7 цифр (радиус в метрах)
+		if ($m_rad !== '' && !preg_match('/^\d{1,7}$/', $m_rad)) { $err_flag_m = true; break; }
+	}
+	unset($vv);
+	if ($err_flag_m) {
+		http_response_code(400);
+		exit('Bad request');
+	}
+	// === Конец валидации ===
 	$i = 0;
 	foreach ($mr_arr as $v){
 		$mlat = $v['mlat'];
