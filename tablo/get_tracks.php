@@ -1,8 +1,8 @@
 <?php
+require_once __DIR__ . '/../guard.php';
+
 header("Cache-Control: no-store, no-cache, must-revalidate"); 
 header("Expires: " . date("r"));
-
-include_once "../options.php";
 
 $anum = $_POST['car'];
 $dt_begin = $_POST['date_b'];

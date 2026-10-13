@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (empty($_SESSION['id']) || $_SESSION['id'] !== session_id()) {
+    header('Location: /index.php');
+    exit;
+}
+?>
 <!doctype html>
 <html lang="ru">
   <head>
