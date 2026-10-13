@@ -151,50 +151,6 @@ function Search2()
 	}
 }
 
-// Поиск по адресу osm
-
-function Search_osm()
-{
-	if (jQuery('#city').val() == ""){
-		alert("Введите данные для поиска");
-	}
-	else{
-		var city = jQuery('#city').val();
-		var street = jQuery('#street').val();
-		var house = jQuery('#house').val();
-		jQuery('#progress').html('<img src="images/ajax-loader.gif" width="66px" height="66px"/>');
-		
-		var url = 'namefinder.php';
-		jQuery.post(
-			url,
-			"f_city=" + encodeURIComponent(city) + "&f_street=" + encodeURIComponent(street) + "&f_house=" + encodeURIComponent(house),
-			function (result){
-				if (result.type !== 'success'){
-					jQuery('#progress').html('');
-					alert('Ошибка!!! Нет данных от сервера адресов.');
-					return(false);
-				}
-				else{
-					if (result.answer !== '') alert (result.answer);
-					jQuery('#progress').html('');
-					if (window.scmarker){
-						for(i=0;i<scmarker.length;i++){
-							map.removeLayer(scmarker[i]);
-						}
-					}
-					scmarker = new Array();
-					var sclatlng = L.latLng(result.lat,result.lon);
-					var scm = new L.marker(sclatlng);
-					scmarker.push(scm);
-					map.addLayer(scmarker[0]);
-					map.setView(sclatlng, 16);
-				}
-				},
-				"json"
-		);
-	}
-}
-
 // Ограничения на ввод символов
 function numReal(evt)
 {
@@ -680,105 +636,6 @@ function newcar(){
 	}
 }
 
-function f_orders(rid){
-	jQuery('#orders').html('');
-	var url = 'get_orders.php';
-	jQuery.get(
-		url,
-		"rid=" + rid,
-		function (result){
-			if (result.type == 'error'){
-				alert(result.msg);
-				return false;
-			}
-			else {
-				jQuery('#orders').css('display','block');
-				var x = jQuery('#orders').html();
-				x = '<div class=\"zot\">Заказы</div><div id="closecontrol" class="rlabel" onclick="showhide2(\'orders\')"></div><table id="tponline" width="100%" cellpadding="1" cellspacing="0"><tr class="tptr"><td class="tdol1">Отправитель (склад)</td><td class="tdol1">Получатель (склад/магазин)</td><td class="tdol1">Дата погрузки/доставки (план)</td><td class="tdol1">Мест</td><td class="tdol1">Вес</td><td class="tdol1">Статус</td><td class="tdol1">Документы</td></tr>';
-				jQuery(result.orders).each(function(){
-				x += '<tr class="tptr2"><td class="tdol1">'+jQuery(this).attr('postav')+' ('+jQuery(this).attr('psklad')+')</td><td class="tdol1">'+jQuery(this).attr('zakaz')+' ('+jQuery(this).attr('zsklad')+')</td><td class="tdol1">'+jQuery(this).attr('dt')+'</td><td class="tdol1">'+jQuery(this).attr('kolm')+'</td><td class="tdol1">'+jQuery(this).attr('vb')+'</td><td class="tdol1">'+jQuery(this).attr('ostat')+'</td><td class="tdol1"><div class=\"imit_a\" onclick=\"f_docs('+rid+','+jQuery(this).attr('oid')+')\">Документы ('+jQuery(this).attr('coldoc')+')</div></td></tr>';
-				});
-				x += '</table>';
-				jQuery('#orders').html(x);
-			}
-		},
-		"json"
-	);
-}
-
-function f_upload(){
-	if (jQuery('#upldoc').val() == ''){
-		alert ('Выберите файл для загрузки');
-		return false;
-	}else{
-		jQuery('#form_upl').submit();
-		jQuery('#upload').hide();
-		jQuery('#res').html("Идет загрузка файла");
-	}
-}
-
-function handleResponse(mes){
-	jQuery('#upload').show();
-	if (mes.errors != null){
-		alert ("Возникли ошибки во время загрузки файла: " + mes.errors);
-	}
-	else {
-		alert ("Файл " + mes.name + " загружен"); 
-	}    
-}
-
-function f_upload2(){
-	if (jQuery('#upldoc2').val() == ''){
-		alert ('Выберите файл для загрузки');
-		return false;
-	}else{
-		jQuery('#form_upltrack').submit();
-		jQuery('#upltrack').hide();
-		jQuery('#res2').html("Идет загрузка файла");
-	}
-}
-
-function handleResponse2(mes){
-	jQuery('#upltrack').show();
-	if (mes.errors != null){
-		alert ("Возникли ошибки во время загрузки файла: " + mes.errors);
-		return false;
-	}
-	else {
-/*
-		alert ("Файл " + mes.name + " загружен");    
-*/
-		jQuery('#res2').html('');
-	}    
-}
-
-function f_docs(rid, oid){
-	jQuery('#docs').html('');
-	var url = 'get_docs.php';
-	jQuery.get(
-		url,
-		"rid=" + rid + "&oid=" + oid, 
-		function (result){
-			if (result.type == 'error'){
-				alert(result.msg);
-				return false;
-			}
-			else {
-				jQuery('#docs').css('display','block');
-				var x = jQuery('#docs').html();
-				x = '<div class=\"zot\">Документы</div><div id="closecontrol" class="rlabel" onclick="showhide2(\'docs\')"></div><table id="tponline" width="100%" cellpadding="1" cellspacing="0"><tr class="tptr"><td class="tdol1">Тип документа</td><td class="tdol1">Формат документа</td><td class="tdol1">Скачать документ</td><td class="tdol1">Хозяин документа</td></tr>';
-				jQuery(result.docs).each(function(){
-				x += '<tr class="tptr2"><td class="tdol1">'+jQuery(this).attr('type')+'</td><td class="tdol1">'+jQuery(this).attr('format')+'</td><td class="tdol1"><a href="savefile.php?doc='+jQuery(this).attr('id')+'&user='+jQuery(this).attr('uid')+'&ext='+jQuery(this).attr('format')+'" target="_blank">'+jQuery(this).attr('doc')+'</a></td><td class="tdol1">'+jQuery(this).attr('uid')+'</td></tr>';
-				});
-				x += '</table>';
-				x += '<div id="fupldocs"><form id="form_upl" enctype="multipart/form-data" action="?route=1" method="post" target="hiddenframe"><input type="hidden" name="MAX_FILE_SIZE" value="2000000"/><input type="file" name="upldoc" id="upldoc" class="ifile"><input name="upload" id="upload" type="button" class="linp" value="Загрузить документ" onclick="f_upload()"><input type="hidden" name="rid" value="'+rid+'"><input type="hidden" name="oid" value="'+oid+'"></form></div><div id="res"></div><iframe id="hiddenframe" name="hiddenframe" style="width:0px; height:0px; border:0px"></iframe>';
-				jQuery('#docs').html(x);
-			}
-		},
-		"json"
-	);
-}
-
 function RoadsAddr(evt,tp){	// Функция контекстного поиска по адресу
 	evt = (evt) ? evt : event;
 	var elem = (evt.target) ? evt.target : evt.srcElement
@@ -1002,29 +859,9 @@ function mtransit(){
 	jQuery('#trcounter').attr('value',ci);
 }
 
-function search_osm_ent(evt){
-	evt = (evt) ? evt : event;
-	var elem = (evt.target) ? evt.target : evt.srcElement
-	var code = (evt.charCode) ? evt.charCode : evt.keyCode
-	if (code == 13){
-		return Search_osm();
-	}
-}
-
 function focuson(obj){
 	obj.focus();
 }
-
-function hidesave(){
-	if (jQuery('#savetr'))jQuery('#savetr').html('');
-}
-
-function sendtr(){
-	jQuery('#f1').attr('action','savetrack.php');
-	jQuery('#f1').attr('target','_blank');
-	jQuery('#f1').submit();
-}
-
 
 function rmarker(){
 	if (window.repmarker){
@@ -1509,9 +1346,6 @@ function frep_all(){	// Функция для всех отчетов
 					}else{
 						var alarmsList = 'отсутствуют';
 					}
-
-					// var alarms = encodeURIComponent(JSON.stringify(result.ALARMS));
-					// <a class = "mr-3" href="reptmpr.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&tmprmin=' + result.TMPRMIN + '&tmprmax=' + result.TMPRMAX + '&alarms=' + alarms + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a>
 					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по температуре в кузове</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5><h5>Минимальная фактическая температура: ' + result.TMPRMIN + ' &deg;C</h5><h5>Максимальная фактическая температура: ' + result.TMPRMAX + ' &deg;C</h5><h5 class="mt-3">Тревоги:</h5>' + alarmsList + '</div></div></div>');
 				}
 				if (f_gwx == 'repfuel'){
@@ -1524,9 +1358,6 @@ function frep_all(){	// Функция для всех отчетов
 					}else{
 						var alarmsList = 'отсутствуют';
 					}
-
-					// var alarms = encodeURIComponent(JSON.stringify(result.ALARMS));
-					// <a class = "mr-3" href="repfuel.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&fuel=' + result.FUEL + '&fuelmove=' + result.FUELMOVE + '&fuelstop=' + result.FUELSTOP + '&fuelbeg=' + result.FUELBEG + '&fuelend=' + result.FUELEND + '&lenscan=' + result.LENCAN + '&lengps=' + result.LENGPS + '&lencanbeg=' + result.LENCANBEG + '&lencanend=' + result.LENCANEND + '&refill=' + result.REFILL + '&refillcnt=' + result.REFILLCNT + '&draincnt=' + result.DRAINCNT + '&stopcnt=' + result.STOPCNT + '&movetime=' + result.MOVETIME + '&avgspeed=' + result.AVGSPEED + '&alarms=' + alarms + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a>
 					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по топливу</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5></div></div><div class="row"><div class="col-md-6"><h5>Потрачено по ДУТ: ' + result.FUEL + ' л</h5><h5>Потрачено по ДУТ в движении: ' + result.FUELMOVE + ' л</h5><h5>Потрачено по ДУТ на холостом ходу: ' + result.FUELSTOP + ' л</h5><h5>Начальный уровень топлива: ' + result.FUELBEG + ' л</h5><h5>Конечный уровень топлива: ' + result.FUELEND + ' л</h5><h5>Пробег CAN: ' + result.LENCAN + ' км</h5><h5>Пробег GPS: ' + result.LENGPS + ' км</h5></div><div class="col-md-6"><h5>Начальный пробег CAN: ' + result.LENCANBEG + ' км</h5><h5>Конечный пробег CAN: ' + result.LENCANEND + ' км</h5><h5>Всего заправлено: ' + result.REFILL + ' л</h5><h5>Всего заправок: ' + result.REFILLCNT + '</h5><h5>Всего сливов: ' + result.DRAINCNT + '</h5><h5>Количество стоянок: ' + result.STOPCNT + '</h5><h5>Время в поездках: ' + result.MOVETIME + '</h5><h5>Средняя скорость: ' + result.AVGSPEED + ' км/ч</h5></div></div><div class="row"><div class="col"><h5 class="mt-3">Сливы:</h5>' + alarmsList + '</div></div></div>');
 				}
 				if (f_gwx == 'repsteptmpr'){
@@ -1539,9 +1370,6 @@ function frep_all(){	// Функция для всех отчетов
 					}else{
 						var alarmsList = 'отсутствуют';
 					}
-
-					// var values = encodeURIComponent(JSON.stringify(result.VALUES));
-					// <a class = "mr-3" href="repsteptmpr.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&dtend=' + result.DTEND + '&values=' + values + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a>
 					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по температуре (по интервалам)</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + ' - ' + result.DTEND + '</h5><h5 class="mt-3">Температура:</h5>' + alarmsList + '</div></div></div>');
 				}
 				if (f_gwx == 'intrep'){
@@ -1559,9 +1387,6 @@ function frep_all(){	// Функция для всех отчетов
 					}else{
 						var intervalsList = 'отсутствуют';
 					}
-
-					// var intervals = encodeURIComponent(JSON.stringify(result.INTERVALS));
-					// <a class = "mr-3" href="repinterval.php?anum=' + result.ANUM + '&dtbeg=' + result.DTBEG + '&intervals=' + intervals + '&n=' + Math.random() + '" target="_blank">Открыть в новой вкладке</a>
 					$('#reports').html('<div class="container"><div class="row"><div class="col"><div id="print" class="text-right m-2"><a href="#" onclick="window.print()">Печать</a></div><h1 class="text-center mb-4">Отчет по интервалам движения</h1><h2>' + result.ANUM + '</h2><h5 class="mb-3">' + result.DTBEG + '</h5>' + intervalsList + '</div></div></div>');
 				}
 				if (f_gwx  == 'repstop'){

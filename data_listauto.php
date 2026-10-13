@@ -47,7 +47,7 @@ if ($cond_lctn > ""){
 if ($uowner == 0 && !isset($_POST['sav'])){
 	$insuser = "";
 }else{
-	$insuser = "AND SP_CARS.OWNER = $uowner";
+	$insuser = "AND SP_CARS.OWNER = intval($uowner)";
 }
 
 if (isset($_POST['mash']) && isset($_POST['mvoz'])){

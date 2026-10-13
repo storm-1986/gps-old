@@ -1,6 +1,7 @@
 <div class="container-fluid">
-<div class="h4 my-3">Краткое описание сайта</div>
-<div class="mb-2">
+	<div class="row">
+	<div class="mb-2 col">
+	<div class="h4 my-3">Краткое описание сайта</div>
 <b>Внимание!</b> При изменениях в интерфейсе, если что-то некорректно отображается или не работает, попробуйте обновить страницу с помощью комбинации клавиш "CTRL-F5"<br/>
 <b>Возможна некорректная работа сайта при использовании браузера Internet Explorer</b>. Рекомендуется использовать <a href="http://www.google.ru/chrome" target="_blank">Chrome</a> или <a href="http://www.opera.com/download/" target="_blank">Opera</a> или <a href="http://www.mozilla.com/ru/firefox/" target="_blank">Firefox</a>.<br/>
 <b>Карты OpenStreet.</b> Возможности:
@@ -53,6 +54,7 @@
 </div>
 <div class="mb-2">
 	С вопросами по сайту обращаться по внутреннему телефону 6419 (Вадим). Предложения и замечания присылать на <a href="mailto:shtorm@pda.savushkin.by">shtorm@pda.savushkin.by</a>.
+</div>
 </div>
 </div>
 </div>

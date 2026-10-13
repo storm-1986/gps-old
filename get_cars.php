@@ -1,10 +1,12 @@
 <?php
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
+    require_once __DIR__ . '/guard.php';
+}
+
 header("Cache-Control: no-store, no-cache, must-revalidate"); 
 header("Expires: " . date("r"));
 
-include_once "options.php";
-
-$user_name = $_GET['su_name'];
+$user_name = $_SESSION['username'];
 //$user_name = 'admin';
 @$car_id = $_GET['car'];
 @$type = $_GET['type'];

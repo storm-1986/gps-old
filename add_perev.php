@@ -1,8 +1,9 @@
 <?php
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
+    require_once __DIR__ . '/guard.php';
+}
 // Добавление перевозчика для трекеров
 if (isset($_POST['perev'])){
-	include_once "options.php";
-
 	$new_perev = urldecode($_POST['perev']);
 	$new_perev = trim($new_perev);
 	$new_perev = str_replace("'",'"', $new_perev);
@@ -24,7 +25,6 @@ if (isset($_POST['perev'])){
 	}
 print json_encode($result);
 }else{
-
 	// Добавление перевозчика для админки
 	if (isset($_GET['add'])&&isset($_GET['addperproc'])){
 		$nperev = str_replace("'",'"', $_POST['nperev']);

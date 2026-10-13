@@ -1,5 +1,5 @@
 <?php
-include_once "options.php";
+require_once __DIR__ . '/guard.php';
 
 $day = date("d");
 $mes = date("m");

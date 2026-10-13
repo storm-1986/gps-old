@@ -47,7 +47,7 @@
 </head>
 <body onload="<?php if (isset($_GET['reponmap'])){ echo "init(); rmarker();";} elseif (isset($_GET['osm']) || @$_GET['ponline'] == 3){ echo "init()";}?>">
 <nav id ="menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
-<span class="navbar-brand"><?= $_SESSION['username'];?></span>
+<span class="navbar-brand"><?= htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></span>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
    	<span class="navbar-toggler-icon"></span>
 </button>
@@ -67,7 +67,6 @@ if ($_SESSION['userowner'] == 0){
 	</li>
 <?php
 }
-if ($_SESSION['username'] !== 'velcom'){
 ?>
 	<li class="nav-item dropdown">
 		<a class="nav-link dropdown-toggle <?php if (isset($_GET['ponline'])) echo "active"?> px-md-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Сервисы</a>
@@ -78,25 +77,18 @@ if ($_SESSION['username'] !== 'velcom'){
 		</div>
 	</li>
 <?php
-if ($_SESSION['usertype'] >= 1){
-?>
-	<!-- <li class="nav-item">
-		<a class="nav-link <?php if (isset($_GET['treker'])) echo "active"?> px-md-3" href="?treker=1">Трекеры</a>
-	</li> -->
-<?php
-}
 if ($_SESSION['usertype'] == 1){
 ?>
 	<li class="nav-item dropdown">
 		<a class="nav-link dropdown-toggle <?php if (isset($_GET['admin'])) echo "active"?> px-md-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Админка</a>
 		<div class="dropdown-menu">
-			<a class="dropdown-item" href="?admin=3">Справочник автомобилей</a>
 			<a class="dropdown-item" href="?admin=1">Справочник перевозчиков</a>
 			<a class="dropdown-item" href="?admin=2">Управление пользователями</a>
+			<a class="dropdown-item" href="?admin=3">Справочник автомобилей</a>
+			<a class="dropdown-item" href="/lastgps.php" target="_blank">Последние координаты</a>
 		</div>
 	</li>
 <?php
-}
 }
 ?>
 	<li class="nav-item">
@@ -105,6 +97,6 @@ if ($_SESSION['usertype'] == 1){
 </ul>
 </div>
 </nav>
-<input name="uname" type="hidden" id="u_id" value="<?= $_SESSION['username']?>"/>
-<input name="uowner" type="hidden" id="u_own" value="<?= $_SESSION['userowner']?>"/>
-<input name="utype" type="hidden" id="u_tp" value="<?= $_SESSION['usertype']?>"/>
+<input name="uname" type="hidden" id="u_id" value="<?= htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8') ?>"/>
+<input name="uowner" type="hidden" id="u_own" value="<?= (int)$_SESSION['userowner'] ?>"/>
+<input name="utype" type="hidden" id="u_tp" value="<?= (int)$_SESSION['usertype'] ?>"/>

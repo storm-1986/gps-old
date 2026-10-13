@@ -1,39 +1,4 @@
 <div id="progress"></div>
-<!--
-<div class="toast hide" id="findcontrol" style="position: absolute; top: 105px; left: 250px; z-index: 10000;" onclick="push_to_fwd(this.id)">
-    <div class="toast-header">
-        <strong class="mr-auto">Поиск</strong>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="toast-body">
-        <p class="h6 mb-3">Поиск по координатам</p>
-   		<div class="form-group">
-   			<div class="input-group mb-3">
-				<div class="input-group-prepend">
-					<span class="input-group-text" id="basic-addon1">Широта</span>
-				</div>
-				<input type="text" class="form-control" id="slat" placeholder="5x.xx" aria-label="Широта" aria-describedby="basic-addon1" maxlength="9" onkeypress="return numReal(event)">
-			</div>
-   			<div class="input-group mb-3">
-				<div class="input-group-prepend">
-					<span class="input-group-text" id="basic-addon1">Долгота</span>
-				</div>
-				<input type="text" class="form-control" id="slong" placeholder="2x.xx" aria-label="Долгота" aria-describedby="basic-addon2" maxlength="9" onkeypress="return numReal(event)">
-			</div>
-			<input type="button" class="btn btn-secondary form-control" value="Найти" onclick="Search2()"/>
-   		</div>
-   		<p class="h6 mb-3">Поиск по адресу</p>
-   		<div class="form-group">
-			<input type="text" class="form-control mb-3" id="city" placeholder="Город" onkeydown="search_osm_ent(event)">
-			<input type="text" class="form-control mb-3" id="street" placeholder="Улица" onkeydown="search_osm_ent(event)">
-			<input type="text" class="form-control mb-3" id="house" placeholder="Здание" onkeydown="search_osm_ent(event)">
-			<input type="button" class="btn btn-secondary form-control" value="Найти" onclick="Search_osm()"/>
-   		</div>
-    </div>
-</div>
--->
 <div id="all">
     <div id="controls" class="resizable">
         <div class="p-2">
@@ -252,11 +217,6 @@
     </div>
     <div id="leftBorder"></div>
     <div id="rightside" class="resizable">
-        <!--
-        <div id="imgbtns">
-            <input id="mfound" class="mx-1" type="image" src="/images/lypa.png" alt="Поиск по адресу и координатам" title="Поиск по адресу и координатам">
-        </div>
-        -->
         <div id="reports"></div>
         <div id="map"></div>
         <div id="bottomBorder"></div>

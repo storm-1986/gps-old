@@ -1,14 +1,18 @@
 <?php
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
+    require_once __DIR__ . '/guard.php';
+}
+
 header("Cache-Control: no-store, no-cache, must-revalidate"); 
 header("Expires: " . date("r"));
 
-include_once "options.php";
+// Авторизационные данные берём из сессии, а не из параметров запроса
+$user_name = $_SESSION['username'];
+$user_type = $_SESSION['usertype'];
+$u_owner   = $_SESSION['userowner'];
 
-if(isset($_GET['su_name'])) $user_name = $_GET['su_name'];
-if(isset($_POST['su_name'])) $user_name = $_POST['su_name'];
 if(isset($_GET['f_gwx'])) $f_gwx = $_GET['f_gwx'];
 if(isset($_POST['f_gwx'])) $f_gwx = $_POST['f_gwx'];
-if(isset($_GET['su_type'])) $user_type = $_GET['su_type'];
 if(isset($_GET['gidmap'])) $city_name = $_GET['gidmap'];
 if(isset($_GET['car'])) $car_id = $_GET['car'];
 if(isset($_GET['su_own']))	$u_owner = $_GET['su_own'];

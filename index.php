@@ -3,8 +3,18 @@ session_start();
 
 include_once "options.php";
 
-if (isset($_GET['exit'])){
-	session_destroy();
+if (isset($_GET['exit'])) {
+    $_SESSION = [];
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+    session_destroy();
+    header('Location: /index.php');
+    exit;
 }
 ?>
 
@@ -20,97 +30,94 @@ if (isset($_GET['exit'])){
 <?php
 
 if (!isset($_SESSION['id']) || $_SESSION['id'] !== session_id()){
+	if (isset($_POST['aut'])) {
 
-if (isset ($_POST['aut'])){
-	$rem = array('%', '_', '=');
-	$user = str_replace($rem,"",$_POST['log']);
-	$user = htmlentities($user, ENT_QUOTES);
-	$pswd = md5($_POST['pass']);
+		$user = trim($_POST['log'] ?? '');
+		$pass = $_POST['pass'] ?? '';
+		$pswd = md5($pass);
 
-	if ($user !== '' AND $pswd !== ''){
-		$vu = $conn->query("SELECT * FROM SP_USER WHERE LOGIN = '".$user."' AND PASSWORD = '".$pswd."'");
-		$count = 0;
+		if ($user !== '' && $pswd !== '') {
 
-		while ($data_vu = $vu->fetch( PDO::FETCH_ASSOC )){
-			$count++;
-			$kolpos = $data_vu["COUNTER"];
-			$utype = $data_vu["ROLE"];
-			$uowner = $data_vu["OWNER"];
-			$fails = $data_vu["FAIL"];
-			$lctn = $data_vu["LCTN"];
-			$urole = $data_vu["ROLENAME"];
-			$ukod = $data_vu["KOD"];
-			$ukod2 = $data_vu["KOD2"];
-		}
-		if($fails == $attempts){
+			// Ищем пользователя по логину+паролю (prepared statement)
+			$stmt = $conn->prepare("SELECT * FROM SP_USER WHERE LOGIN = ? AND PASSWORD = ?");
+			$stmt->execute([$user, $pswd]);
+			$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$count = count($rows);
 
-			$autmess = "Вы превысили количество попыток для регистрации. Ваша учётная запись заблокирована. Обратитесь за помощью к администратору.";
+			if ($count === 1) {
 
-			include 'form.php';
-            exit;	
-		}
-		if($count == 1){	/*	!!!!!!!!!!!!!!!!!!!!!!!!!!!!	УСПЕШНАЯ АВТОРИЗАЦИЯ	!!!!!!!!!!!!!!!!!!!!!!!!!!!!	*/
-			$_SESSION['id'] = session_id();
-			$_SESSION['username'] = $user;
-			$_SESSION['usertype'] = $utype;
-			$_SESSION['userowner'] = $uowner;
-			$_SESSION['userrole'] = $urole;
-			$_SESSION['userkod'] = $ukod;
-			$_SESSION['userkod2'] = $ukod2;
-			$_SESSION['lctn'] = $lctn;
-			
-			$kolpos++;
-			
-			// Обнуление счётчика неудачных попыток
+				$data_vu = $rows[0];
+				$fails = $data_vu["FAIL"];
 
-			$upd = $conn->query("UPDATE SP_USER SET COUNTER = ".$kolpos.", FAIL = 0, LAST_DATE = GETDATE() WHERE LOGIN = '".$user."'");
+				// Проверка блокировки
+				if ($fails == $attempts) {
+					$autmess = "Вы превысили количество попыток для регистрации. Ваша учётная запись заблокирована. Обратитесь за помощью к администратору.";
+					include 'form.php';
+					exit;
+				}
 
-//			$uowner = $resseluser['owner'];
-			
-			include_once "topmenu.php";
-			include "omaps.php";
-		}
-        else{		/*	!!!!!!!!!!!!!!!!!!!!!!!!!!!!	НЕУДАЧНАЯ АВТОРИЗАЦИЯ	!!!!!!!!!!!!!!!!!!!!!!!!!!!!	*/
-        $vulog = $conn->query("SELECT * FROM SP_USER WHERE LOGIN = '".$user."'");
-		$lcount = 0;
-		while($data_vulog = $vulog->fetch( PDO::FETCH_ASSOC )){
-			$lcount++;
-		}
-		if($lcount == 1){		/*	!!!!!!!!!!!!!!!!!!!!!!!!!!!!	ПРОВЕРКА НА СУЩЕСТВОВАНИЕ ЛОГИНА	!!!!!!!!!!!!!!!!!!!!!!!!!!!!	*/
-			$kolfail = $data_vulog["FAIL"];
-			if ($kolfail < $attempts){
-				$kolfail++;
-//				$updfail = ads_do($rConn, "UPDATE SP_USER SET FAIL = ".$kolfail." WHERE LOGIN = '".$user."'");
-				$updfail = $conn->query("UPDATE SP_USER SET FAIL = ".$kolfail." WHERE LOGIN = '".$user."'");
+				// Успешная авторизация — защита от session fixation
+				session_regenerate_id(true);
+
+				$_SESSION['id']        = session_id();
+				$_SESSION['username']  = trim($data_vu["LOGIN"]);
+				$_SESSION['usertype']  = trim($data_vu["ROLE"]);
+				$_SESSION['userowner'] = $data_vu["OWNER"];
+				$_SESSION['userrole']  = $data_vu["ROLENAME"];
+				$_SESSION['userkod']   = $data_vu["KOD"];
+				$_SESSION['userkod2']  = $data_vu["KOD2"];
+				$_SESSION['lctn']      = $data_vu["LCTN"];
+
+				// Обновляем счётчик посещений и сбрасываем неудачные попытки
+				$upd = $conn->prepare(
+					"UPDATE SP_USER SET COUNTER = COUNTER + 1, FAIL = 0, LAST_DATE = GETDATE() WHERE LOGIN = ?"
+				);
+				$upd->execute([$user]);
+
+				include_once "topmenu.php";
+				include "omaps.php";
+				exit;
 			}
-			if ($kolfail == $attempts){
-				$autmess = "Вы превысили количество попыток для регистрации. Ваша учётная запись заблокирована. Обратитесь за помощью к администратору.";
-				include 'form.php';
-            	exit;
+
+			// Неудачная авторизация — считаем попытки только если логин существует
+			$stmt = $conn->prepare("SELECT * FROM SP_USER WHERE LOGIN = ?");
+			$stmt->execute([$user]);
+			$userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			if ($userRow !== false) {
+				$kolfail = (int)$userRow["FAIL"];
+
+				if ($kolfail < $attempts) {
+					$kolfail++;
+					$updfail = $conn->prepare("UPDATE SP_USER SET FAIL = ? WHERE LOGIN = ?");
+					$updfail->execute([$kolfail, $user]);
+				}
+
+				if ($kolfail == $attempts) {
+					$autmess = "Вы превысили количество попыток для регистрации. Ваша учётная запись заблокирована. Обратитесь за помощью к администратору.";
+					include 'form.php';
+					exit;
+				}
+
+				$leftattempts = $attempts - $kolfail;
+				$note = " У Вас осталось " . $leftattempts . " попытки.";
+			} else {
+				$note = "";
 			}
-			$leftattempts = $attempts - $kolfail;
-			$note = " У Вас осталось ".$leftattempts." попытки.";
-		}
-		else{
-			$note = "";
+
+			$autmess = "Неверно указан логин или пароль" . $note;
+			include 'form.php';
+			exit;
 		}
 
-			$autmess = "Неверно указан логин или пароль".$note;
-			include 'form.php';
-            exit;
-        }
-	}
-	else{
 		$autmess = "Введите свои данные";
 		include 'form.php';
 		exit;
 	}
-}
-else{
+
 	$autmess = "Введите логин и пароль!!!";
 	include 'form.php';
 	exit;
-}
 }
 else{
 
@@ -125,11 +132,9 @@ if (isset($_GET['ponline']) && $_GET['ponline'] == 3) include_once "monline.php"
 if (isset($_GET['admin'])){
 	if ($_GET['admin'] == 1){
 		include_once "sp_perev.php";
-	}
-	if ($_GET['admin'] == 2){
+	}elseif ($_GET['admin'] == 2){
 		include_once "ausers.php";
-	}
-	if ($_GET['admin'] == 3){
+	}elseif ($_GET['admin'] == 3){
 		include_once "sp_cars.php";
 	}
 }

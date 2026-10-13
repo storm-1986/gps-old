@@ -1,10 +1,9 @@
 <?php
-include_once "options.php";
-/*
-$address   = "bpr_serv";
-$port      = 2568;
-*/
-$su_name = $_GET['su_name'];
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
+    require_once __DIR__ . '/guard.php';
+}
+
+$su_name = $_SESSION['username'];
 $fromlat = $_GET['fromlat'];
 $fromlon = $_GET['fromlon'];
 $tolat = $_GET['tolat'];

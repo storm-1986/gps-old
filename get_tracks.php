@@ -1,25 +1,29 @@
 <?php
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
+    require_once __DIR__ . '/guard.php';
+}
+
 header("Cache-Control: no-store, no-cache, must-revalidate"); 
 header("Expires: " . date("r"));
-
-include_once "options.php";
 
 $ver = $_GET['ver'];
 $ftr = $_GET['ftr'];
 
 if ($ver == 1){
 
-$su_name = $_GET['su_name'];
 $car_id = $_GET['car'];
 $car_id = iconv("UTF-8", "CP1251", $car_id);
 $sdt = $_GET['sdt'];
 $podt = $_GET['podt'];
-$shift = $_GET['smena'];
+$shift = $_GET['smena'] ?? '';
+if ($shift !== '') {
+    $shift = intval($shift);
+}
 $allday = $_GET['allday'];
 $topl = $_GET['topl'];
 $tmpr = $_GET['tmpr'];
 $prev = $_GET['prev'];
-$prev_skor = $_GET['prev_skor'];
+$prev_skor = intval($_GET['prev_skor']);
 $trtype = $_GET['trtype'];
 
 if ($shift !== ''){

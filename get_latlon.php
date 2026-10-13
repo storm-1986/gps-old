@@ -1,10 +1,12 @@
 <?php
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
+    require_once __DIR__ . '/guard.php';
+}
+
 header("Cache-Control: no-store, no-cache, must-revalidate"); 
 header("Expires: " . date("r"));
 
-include_once "options.php";
-
-if(isset($_POST['su_name'])) $user_name = $_POST['su_name'];
+$user_name = $_SESSION['username'];
 if(isset($_POST['f_gwx'])) $f_gwx = $_POST['f_gwx'];
 if(isset($_POST['addr'])) $addr = $_POST['addr'];
 
